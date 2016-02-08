@@ -1,5 +1,3 @@
-#include "warGame.h"
-#include "company_name.h"
 #include "WERTYU.h"
 #include "doublets.h"
 #include "eatMan.h"
