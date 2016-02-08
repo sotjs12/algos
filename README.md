@@ -1,1 +1,1 @@
-# algos
+hoon's algorithm challenges.
