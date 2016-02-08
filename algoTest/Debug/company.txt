@@ -1,0 +1,11 @@
+4
+"Anderson Consulting" to  "Accenture"
+"Eron" to "Dynegy"
+"DEC" to "compaq"
+"TWA" to "American"
+5
+Anderson Accounting begat Anderson Consulting, which
+offered advice to Enron before it DECLARED bankruptcy,
+which made Anderson
+Consulting quite happy it changed its name
+in the first place!
