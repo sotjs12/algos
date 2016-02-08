@@ -1,0 +1,110 @@
+<style type="text/css">
+h2{
+	margin: 0;     
+	color: #666;
+	padding-top: 30px;
+	font-size: 52px;
+	font-family: "trebuchet ms", sans-serif;    
+}
+h3{ 
+	color: #752;
+	font-family: "trebuchet ms", sans-serif;    
+}
+.item{
+	background: #333;    
+	text-align: center;
+	height: 300px !important;
+}
+.carousel{
+	margin-top: 20px;
+}
+.bs-example{
+	margin: 20px;
+}
+</style>
+
+
+<div id="home" class="carousel slide" data-interval="30000" data-ride="carousel">
+	<!-- Carousel indicators -->
+	<ol class="carousel-indicators">
+		<li data-target="#home" data-slide-to="0" class="active"></li>
+		<li data-target="#home" data-slide-to="1"></li>
+		<li data-target="#home" data-slide-to="2"></li>
+		<li data-target="#home" data-slide-to="3"></li>
+		<li data-target="#home" data-slide-to="4"></li>
+	</ol>   
+	<!-- Carousel items -->
+	<div class="carousel-inner">
+		<div class="active item">				
+			<h2>STEP 1</h2>	
+			<div class="carousel-caption">
+				<h3>Download Daily NASDAQ 100 List</h3>
+				<p>매일 nasdaq.com 선정 100대 리스트를 갱신합니다.</p>
+				<a class="btn btn-danger" href ng-click="show('down')">Download 100 List</a>
+			</div>
+		</div>
+		<div class="item">
+			<h2>STEP 2</h2>
+			<div class="carousel-caption">
+				<h3>Update Stock Data</h3>
+				<p>NASDAQ 100 List 를 기반으로 당일의 종가 데이터를 DB 에 업로드 합니다. 이때 Yahoo API 를 사용하여 장 마감가, 거래량, 날짜데이터를 받아옵니다.</p>
+				<a class="btn btn-danger" href ng-click="show('UDT')">Update Daily Stock</a>
+			</div>
+		</div>
+		<div class="item">
+			<h2>STEP 3</h2>
+			<div class="carousel-caption">
+				<h3>Refresh All Stock Data</h3>
+				<p>만약 NASDAQ 100 List 상에 변화가 생긴다면 10년치의 주가데이터를 모두 받아옵니다.</p>
+				<a class="btn btn-danger" href ng-click="show('UAT')">Restore 10 Years Stock</a>
+			</div>
+		</div>
+		<div class="item">
+			<h2>STEP 4</h2>
+			<div class="carousel-caption">
+				<h3>Run JAVA Program</h3>
+				<p>nodeJS 의 child process module 을 이용하여 새로운 서브 프로세스를 실행시킵니다. K-Means 로 구현한 주가분석 JAVA 프로그램을 실행하게됩니다. 단, CPU 사용량이 많은 기계학습 알고리즘 이므로 여러번 실행시 서버가 다운될 수 있습니다.</p>
+				<a class="btn btn-danger" href ng-click="show('AJ')">Calc Daily Analisis</a>
+			</div>
+		</div>
+		<div class="item">
+			<h2>STEP 5</h2>
+			<div class="carousel-caption">
+				<h3>Make JSON FIle</h3>
+				<p>Restful 한 서비스를 제공하기 위해 DB에 1회접근하여 모든 데이터를 JSON 형식으로 변환한 뒤 사용자 요청시 JSON 파일만 전송하여 DB 접근을 최소화 합니다. 주가분석 JAVA 프로그램의 결과값이 DB 에 업로드 된 후에 새롭게 분석된 데이터를 JSON 으로 변환합니다.</p>
+				<a class="btn btn-danger" href ng-click="show('IAJ')">Update Daily Analisis JSON</a>
+			</div>
+		</div>
+	</div>
+	<!-- Carousel nav -->
+	<a class="carousel-control left" href="#home" data-slide="prev">
+		<span class="glyphicon glyphicon-chevron-left"></span>
+	</a>
+	<a class="carousel-control right" href="#home" data-slide="next">
+		<span class="glyphicon glyphicon-chevron-right"></span>
+	</a>
+</div>
+<br><br>
+<div class="container marketing">
+	<!-- Three columns of text below the carousel -->
+	<div class="row">
+		<div class="col-lg-4">
+			<img class="img-thumbnail" src="images/grid.JPG" alt="Generic placeholder image"  height="190">
+			<h3>Grid Style</h3>
+			<p> GRID 형식으로 분석 데이터를 간략하게 보여줍니다. 검색기능을 이용하여 자신의 관심종목을 찾을 수 있습니다. 더 자세한 데이터를 얻고자 할 때 nasdaq.com 링크를 이용할수도 있습니다.</p>
+			<p><a class="btn btn-default" href="#Thumb_Main" role="button">View details &raquo;</a></p>
+		</div><!-- /.col-lg-4 -->
+		<div class="col-lg-4">
+			<img class="img-thumbnail" src="images/table.JPG" alt="Generic placeholder image"  height="190">
+			<h3>Table Style</h3>
+			<p> TABLE 형식으로 당일 분석된 데이터를 정렬해서 볼 수있습니다. 보조지표를 정렬 함으로써 적절한 매수, 매도 타이밍을 예측할 수 있고, 예측 정확도가 높은 종목을 찾아낼 수 있습니다.</p>
+			<p><a class="btn btn-default" href="#tableST" role="button">View details &raquo;</a></p>
+		</div><!-- /.col-lg-4 -->
+		<div class="col-lg-4">
+			<img class="img-thumbnail" src="images/index.JPG" alt="Generic placeholder image"  height="190">
+			<h3>Index Info</h3>
+			<p> INDEX 페이지는 이 웹서비스 에서 제공하는 지표에 대한 설명을 포함하고 있습니다. 본 서비스는 에널리스트 들이 선호하는 4가지 지표를 분석하여 제공합니다. 때문에 서비스 이용전 지표에 대한 이해를 바탕으로 투자하는 것을 권장합니다.</p>
+			<p><a class="btn btn-default" href="#Index" role="button">View details &raquo;</a></p>
+		</div><!-- /.col-lg-4 -->
+	</div><!-- /.row -->
+</div>

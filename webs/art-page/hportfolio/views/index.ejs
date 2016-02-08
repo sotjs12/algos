@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Man of th fire</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/agency.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+</head>
+
+<% if(!auth) {%>
+<body id="page-top" class="index" ng-app="papp" ng-controller="init">
+<% }else {%>
+<body id="page-top" class="index" ng-app="papp" ng-controller="adminInit">
+<% } %>    
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top" ng-style="{'color':page.navFontColor}">{{page.pageTitle}}</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden"><a href="#page-top"></a></li>                    
+                    <li><a class="page-scroll" href="#aboutMe" ng-style="{'color':page.navFontColor}">{{page.displayName}}</a></li>
+                    <li><a class="page-scroll" href="#art" ng-style="{'color':page.navFontColor}">ART</a></li>
+                    <li><a class="page-scroll" href="#design" ng-style="{'color':page.navFontColor}">DESIGN</a></li>
+                    <li><a class="page-scroll" href="#friend" ng-style="{'color':page.navFontColor}">BUDDY</a></li>
+                    <li><a class="page-scroll" href="{{page.facebook}}" target="_blank" ng-style="{'color':page.navFontColor}"><i class="fa fa-facebook" ></i></a></li>
+                    <!--   auth user navbar -->
+                    <% if(auth){ %>
+                    <li id="navAuth">
+                        <div class="btn-group" >
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Settings <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a href="" data-toggle="modal" ng-click="toggleModalAdmin()">Defualt Set</a></li>
+                            <li><a href="" data-toggle="modal" ng-click="aboutCtrl()">Statement Set</a></li>
+                            <li><a href="" data-toggle="modal" ng-click="artCtrl()">ArtImg Set</a></li>
+                            <li><a href="" data-toggle="modal" ng-click="designCtrl()">DesignImg Set</a></li>
+                            <li><a href="" ng-click="confirm()">Confirm</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/logout">logout</a></li>
+                          </ul>
+                        </div>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header ng-style="{'background-image': 'url(' + page.mainBgImg + ')'}">
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">&nbsp  </div>
+                <div class="intro-heading">&nbsp</div>
+            </div>
+        </div>
+    </header>    
+    <div ng-include="'page/aboutPage.html'"></div>
+    <div ng-include="'page/artPage.html'"></div>
+    <div ng-include="'page/designPage.html'"></div>
+    <div ng-include="'page/friendPage.html'"></div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4">                    
+                    <span class="copyright">Contact &copy; <a href="mailto:{{page.eMail}}">{{page.eMail}}</a> </span>
+                </div>
+                <div class="col-md-4">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <% if(auth) { %>    
+        <% include modals.html %>   
+    <% } %>
+
+    <!-- jQuery -->
+    <script src="/js/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="/js/classie.js"></script>
+    <script src="/js/cbpAnimatedHeader.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="/js/agency.js"></script>
+    <script src="/js/angular.min.js"></script>   
+    <script>
+        var domain = <%- JSON.stringify(domain) %>;
+        var husers = <%- JSON.stringify(husers) %>;
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.3.js"></script> 
+    <% if(auth) { %>
+        <script src="/js/ng-file-upload/dist/ng-file-upload-shim.min.js"></script> 
+        <script src="/js/ng-file-upload/dist/ng-file-upload.min.js"></script>
+        <script src="/js/adminNgApp.js"></script>
+    <% } else { %>
+        <script src="/js/ngApp.js"></script>
+    <% } %>  
+</body>
+</html>

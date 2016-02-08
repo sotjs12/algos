@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.edsk.ojt.model.ScheduleMapper">
+
+    <resultMap id="scheduleMap" type="kr.co.edsk.ojt.model.ScheduleData">
+        <id property="s_idx" column="S_IDX" />
+        <result property="s_title"       column="S_TITLE" />
+        <result property="s_content"       column="S_CONTENT" />
+        <result property="s_from_date"       column="S_FROM_DATE" />
+        <result property="s_to_date"       column="S_TO_DATE" />
+        <result property="user_id"       column="USER_ID" />
+    </resultMap>
+
+    <select id="getAll" resultMap="scheduleMap">
+        SELECT  * FROM USER_SCHEDULE
+    </select>
+
+    <select id="getByOffset" resultMap="scheduleMap">
+        SELECT  * FROM USER_SCHEDULE LIMIT #{offset},15
+    </select>
+    <select id="getById" resultMap="scheduleMap">
+        SELECT  * FROM USER_SCHEDULE WHERE S_IDX = #{s_idx}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true"  keyProperty="s_idx">
+         INSERT INTO USER_SCHEDULE ( USER_ID, S_TITLE, S_CONTENT, S_FROM_DATE,S_TO_DATE ) VALUES (
+         		#{user_id}
+              , #{s_title}
+              , #{s_content}
+              , #{s_from_date}
+              , #{s_to_date}
+         )
+    </insert>
+
+    <update id="update">
+         UPDATE USER_SCHEDULE SET
+              USER_ID = #{user_id},
+              S_TITLE = #{s_title},
+              S_CONTENT = #{s_content},
+              S_FROM_DATE = #{s_from_date},
+              S_TO_DATE = #{s_to_date}
+         WHERE S_IDX = #{s_idx} LIMIT 1
+    </update>
+
+    <delete id="deleteById">
+         DELETE FROM USER_SCHEDULE WHERE S_IDX = #{s_idx}
+    </delete>
+	<select id="count" resultType="java.lang.Long">
+		SELECT COUNT(*) FROM USER_SCHEDULE;
+	</select>
+</mapper>

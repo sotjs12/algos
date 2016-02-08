@@ -1,0 +1,46 @@
+{
+  "name": "ng-flow",
+  "version": "2.1.4",
+  "description": "Flow.js html5 file upload extension on angular.js framework",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/flowjs/ng-flow.git"
+  },
+  "keywords": [
+    "flow.js",
+    "flow",
+    "resumable.js",
+    "resumable",
+    "angular",
+    "angular.js",
+    "angular-upload",
+    "file upload",
+    "upload"
+  ],
+  "author": {
+    "name": "Aidas Klimas"
+  },
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "grunt": "~0.4",
+    "grunt-contrib-uglify": "~0.4",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-karma": "~0.6.2",
+    "grunt-bump": "0.0.13",
+    "grunt-contrib-clean": "~0.5.0"
+  },
+  "readme": "What is ng-flow?\n============\n\nFlow.js extensions for angular.js framework, no 3rd party JS dependencies required!\n\nng-flow extension is based on [Flow.js](https://github.com/flowjs/flow.js) library.\n\nDemo: http://flowjs.github.io/ng-flow/\n\nHow can I install it?\n============\n1) Get the library:\n\n**Direct Download**\nDownload a latest build from https://github.com/flowjs/ng-flow/releases\nit contains development and minified production files in `dist/` directory,\nthey are also concatenated with core flow.js library.\n\n**Using Bower**\n        \n        bower install ng-flow#~2\n                \n**Git Clone**\n        \n        git clone https://github.com/flowjs/ng-flow\n        \n**Using Yeoman**\n\n        bower install \"ng-flow#~2\" --save\n        grunt bower-install\n                \n2) Add the module to your app as a dependency:\n\n        angular.module('app', ['flow'])\n        \nHow can I use it?\n============\n\nFirst of all wrap places there you are going to use Flow.js\n````html\n<div flow-init>\n    ... other flow directives goes here ...\n</div>\n````\n\nThis directive is going to add $flow variable to current scope.\nAlso directive can be nested, because `$flow` variable is going to be overridden.\n`$flow` is instance of [Flow](https://github.com/flowjs/flow.js#flow).\n\n\nSecondly you need to assign some upload buttons:\n````html\n<input type=\"file\" flow-btn />\n<input type=\"file\" flow-btn flow-directory />\n````\n\nFirst button is for normal uploads and second is for directory uploads.\n\n\nNow you need to display uploaded files, all you need to do is to loop files array.\nFiles array is attached to flow object named `$flow`.\n````html\n<tr ng-repeat=\"file in $flow.files\">\n    <td>{{$index+1}}</td>\n    <td>{{file.name}}</td>\n</tr>\n````\n\nfile is instance of [FlowFile](https://github.com/flowjs/flow.js#flowfile).\n\n\nHow can I drop files?\n============\n\nUse `flow-drop` directive:\n````html\n<div class=\"alert\" flow-drop>\n    Drag And Drop your file here\n</div>\n````\n\n### Prevent dropping files on a document\nUse `flow-prevent-drop` directive on `body` element:\n````html\n<body flow-prevent-drop>\n\n</body>\n````\n\n### How to add some styles while dropping a file?\nUse `flow-drag-enter` directive:\n````html\n<div flow-drag-enter=\"style={border:'4px solid green'}\" flow-drag-leave=\"style={}\"\n     ng-style=\"style\">\n</div>\n````\nNote: `flow-drag-leave` attribute can't be used alone, it is a part of `flow-drag-enter` directive.\n\n### How to dynamically disable drop area?\n````html\n<div class=\"alert\" flow-drop flow-drop-enabled=\"config.enabled\">\n    Drag And Drop your file here\n</div>\n````\nSee example at `samples/dataurl/`.\n\n\nHow can I preview uploaded image?\n============\n\nUse flow-img directive:\n````html\n<img flow-img=\"$flow.files[0]\" />\n````\n\nImage will be automatically updated once file is added. No need to start upload.\n\n\nHow can I set options for flow.js?\n============\n\nUse config:\n````javascript\nvar app = angular.module('app', ['flow'])\n.config(['flowFactoryProvider', function (flowFactoryProvider) {\n    flowFactoryProvider.defaults = {\n        target: '/upload',\n        permanentErrors:[404, 500, 501],\n        minFileSize: 0\n    };\n    // You can also set default events:\n    flowFactoryProvider.on('catchAll', function (event) {\n      ...\n    });\n    // Can be used with different implementations of Flow.js\n    // flowFactoryProvider.factory = fustyFlowFactory;\n}]);\n````\n\nalso can be configured on \"flow-init\" directive:\n````html\n<div flow-init=\"{target:'/uploader'}\">\n\n</div>\n````\n\n\nHow can I catch events?\n============\n\nEvents are listed inside `flow-init` directive:\n````html\n<div flow-init\n      flow-file-success=\" ... properties '$file', '$message' can be accessed ... \"\n      flow-file-progress=\" ... property '$file' can be accessed ... \"\n      flow-file-added=\" ... properties '$file', '$event' can be accessed ... \"\n      flow-files-added=\" ... properties '$files', '$event' can be accessed ... \"\n      flow-files-submitted=\" ... properties '$files', '$event' can be accessed ... \"\n      flow-file-retry=\" ... property '$file' can be accessed ... \"\n      flow-file-error=\" ... properties '$file', '$message' can be accessed ... \"\n      flow-error=\" ... properties '$file', '$message' can be accessed ... \"\n      flow-complete=\" ... \"\n      flow-upload-start=\" ... \"\n      flow-progress=\" ... \"\n      >\n      <div flow-file-progress=\" ... events can be also assigned inside flow-init ... \"></div>\n\n</div>\n````\n\n### How can I catch an event in a controller?\nIf controller is on the same scope as `flow-init` directive or in a child scope,\nthen we can catch events with `$on`. Events are prefixed with `flow::`.\n````javascript\n$scope.$on('flow::fileAdded', function (event, $flow, flowFile) {\n  event.preventDefault();//prevent file from uploading\n});\n````\nsecond argument is always a `flow` instance and then follows event specific arguments.\n\nHow can I assign flow to a parent scope?\n============\n\nUse `flow-name` attribute and set it to any variable in the scope.\n````html\n<div flow-init flow-name=\"obj.flow\">\n    ... Flow is set to obj.flow  ...\n    I have uploaded files: #{{obj.flow.files.length}}\n</div>\n````\n\nHow can I support older browsers?\n============\nGo to https://github.com/flowjs/fusty-flow.js\nand add to your config:\n````javascript\nvar app = angular.module('app', ['flow'])\n.config(['flowFactoryProvider', function (flowFactoryProvider) {\n    flowFactoryProvider.factory = fustyFlowFactory;\n}]);\n````\n\nNeed example?\n============\nClone this repository and go to \"ng-flow/samples/basic/index.html\".\nSingle image upload \"ng-flow/samples/image/index.html\".\n\n\nContribution\n============\nTo ensure consistency throughout the source code, keep these rules in mind as you are working:\n\n* All features or bug fixes must be tested by one or more specs.\n\n* With the exceptions listed below, we follow the rules contained in [Google's JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml):\n\n  * Wrap all code at 100 characters.\n\n  * Instead of complex inheritance hierarchies, we prefer simple objects. We use prototypical\ninheritance only when absolutely necessary.\n\n",
+  "bugs": {
+    "url": "https://github.com/flowjs/ng-flow/issues"
+  },
+  "_id": "ng-flow@2.1.4",
+  "dist": {
+    "shasum": "889fd3d0000a68b3f59b493ed4cc503f9ecef428"
+  },
+  "_from": "ng-flow@",
+  "_resolved": "https://registry.npmjs.org/ng-flow/-/ng-flow-2.1.4.tgz"
+}

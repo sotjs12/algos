@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//eDTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.edsk.ojt.model.BoardMapper">
+	
+	<resultMap id="BoardMap" type="kr.co.edsk.ojt.model.BoardData" >
+		<result property="idx" column="IDX"/> 
+		<result property="b_title" column="B_TITLE"/>
+		<result property="b_date" column="B_DATE"/>
+		<result property="b_content" column="B_CONTENT"/>
+		<result property="b_group" column="B_GROUP"/>
+		<result property="b_parent" column="B_PARENT"/>
+		<result property="b_orderby" column="B_ORDERBY"/>
+		<result property="b_level" column="B_LEVEL"/>
+		<result property="b_hit" column="B_HIT"/>
+		<result property="user_id" column="USER_ID"/>
+		<result property="nickname" column="NICKNAME"/>	
+	</resultMap>
+	
+	<!-- 게시판 글 전체 select -->
+	<select id="getAll" resultMap="BoardMap">
+		SELECT COUNT(*) FROM REPLYBOARD;
+	</select>
+	
+	<!-- 조회수 증가  -->
+	<update id="addHit">
+		UPDATE REPLYBOARD SET B_HIT = B_HIT +1 WHERE IDX=#{idx}
+	</update>
+	
+	<!-- 게시판 목록 출력 -->
+	<select id="getList" resultMap="BoardMap">
+		select * from 
+			(select rownum r, a.* 
+		from 
+			(select a.*, b.nickname from reply board a, user_info b
+		where 
+			a.user_id = b.user_id) a)
+	</select>
+	
+	<!-- 게시글 상세보기-->	
+	<select id="boardView" resultMap="BoardMap">
+		SELECT 
+			IDX, B_DATE, B_TITLE, B_DATE, B_CONTENT, B_GROUP, B_PARENT, B_ORDERBY, B_LEVEL, B_HIT, USER_ID 
+		FROM 
+			REPLYBAORD 
+		WHERE IDX = #{IDX}
+	</select>
+		
+	<!-- 게시판 글쓰기-->
+	<insert id="boardWrite">
+		insert into REPLYBOARD
+			(IDX, B_TITLE, B_CONTENT, B_DATE, B_GROUP, B_PARENT, B_ORDERBY, B_LEVEL, USER_ID)
+		values
+		 	 (IDX_SEQ.nextval, #{b_title}, #{b_content}, sysdate, IDX_SEQ.nextval, 0, 0, 0, #{user_id})
+	</insert>	
+		
+	<!-- 게시글 수정하기  -->
+	<update id="boardModify">
+		update
+			REPLYBOARD
+		set
+			B_TITLE = #{b_title}, B_CONTENT = #{b_content}
+		where
+			USER_ID = #{user_id} and IDX = #{idx}
+	</update>
+	
+	<!-- 게시글(원글) 삭제하기 -->
+	<delete id="boardDelete">
+		delete
+			from REPLYBOARD
+		where 
+			USER_ID = #{user_id} and B_GROUP = #{b_group}
+	</delete>
+	
+	<!-- 답변쓰기 -->
+	<insert id="replyWrite"> 
+		insert into REPLYBOARD
+		(IDX, B_GROUP, B_PARENT, B_ORDERBY, B_LEVEL, B_TITLE, B_CONTENT, B_DATE) 
+		values (B_IDX_SEQ.nextval, #{b_group}, #{b_parent}, #{b_orderby}, #{b_level}, #{b_title}, #{b_content}, sysdate)
+	</insert>
+	
+		<!-- 답변을 쓰기 위한 level 갱신 -->
+	<update id="updateLevel">
+		update 
+			REPLYBAORD
+		set
+			B_ORDERBY = B_ORDERBY + 1
+		where 
+			B_GROUP = #{b_group} and B_LEVEL > #{b_level} 
+	</update>
+	
+	<!-- 답변 삭제하기 -->
+	<select id="getParent">
+		select 
+			IDX
+		from 
+			REPLYBOARD
+		where B_PARENT = #{b_parent}
+	</select>
+	<delete id="replyDelete">
+		delete
+			from REPLYBOARD
+		where 
+			IDX = #{idx}
+	</delete>
+
+</mapper>

@@ -1,0 +1,33 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4" ng-repeat="d in daily">
+			<div class="thumbnail">
+				<div class="caption">
+					<h3><a href="#" ><small>{{d.cName}}</small></a></h3>
+					<p>Date                   : {{d.dates}}</p>
+					<p>Yester Day Close       : {{d.close}}</p>
+					<p>Today Close Prediction : {{d.shortpre}}</p>
+					<table class="table table-hover table-bordered">
+						<thead>
+							<tr>
+								<th>RSI</th>
+								<th>SCS</th>
+								<th>MACD</th>
+								<th>VR</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="active">{{d.rsi}}</td>
+								<td class="success">{{d.scs}}</td>
+								<td class="warning">{{d.macd}}</td>
+								<td class="danger">{{d.vr}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p><a href={{d.linkURL}} class="btn btn-primary" role="button" target="_blank">{{d.linkURL}}</a> </p>
+			</div>
+		</div>
+	</div>
+</div>

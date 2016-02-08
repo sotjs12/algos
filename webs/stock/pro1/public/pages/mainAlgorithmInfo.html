@@ -1,0 +1,80 @@
+<style type="text/css">
+h2{
+	margin: 0;     
+	color: #666;
+	padding-top: 90px;
+	font-size: 52px;
+	font-family: "trebuchet ms", sans-serif;    
+}
+.item{
+	background: #333;    
+	text-align: center;
+	height: 600px !important;
+}
+.carousel{
+	margin-top: 20px;
+}
+.bs-example{
+	margin: 20px;
+}
+</style>
+
+
+<div id="Algorithm" class="carousel slide" data-interval="30000" data-ride="carousel">
+	<!-- Carousel indicators -->
+	<ol class="carousel-indicators">
+		<li data-target="#Algorithm" data-slide-to="0" class="active"></li>
+		<li data-target="#Algorithm" data-slide-to="1"></li>
+		<li data-target="#Algorithm" data-slide-to="2"></li>
+		<li data-target="#Algorithm" data-slide-to="3"></li>
+		<li data-target="#Algorithm" data-slide-to="4"></li>
+	</ol>   
+	<!-- Carousel items -->
+	<div class="carousel-inner">
+		<div class="active item">
+			<div class="carousel-caption">
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+				<a class="btn btn-danger" href ng-click="show('down')">Download 100 List</a>
+			</div>
+		</div>
+		<div class="item">
+			<h2>Slide 2</h2>
+			<div class="carousel-caption">
+				<h3>Second slide label</h3>
+				<p>Aliquam sit amet gravida nibh, facilisis gravida odio.</p>
+				<a class="btn btn-danger" href ng-click="show('UDT')">Update Daily Stock</a>
+			</div>
+		</div>
+		<div class="item">
+			<h2>Slide 2</h2>
+			<div class="carousel-caption">
+				<h3>Second slide label</h3>
+				<p>Aliquam sit amet gravida nibh, facilisis gravida odio.</p>
+				<a class="btn btn-danger" href ng-click="show('UAT')">Restore 10 Years Stock</a>
+			</div>
+		</div>
+		<div class="item">
+			<h2>Slide 2</h2>
+			<div class="carousel-caption">
+				<h3>Second slide label</h3>
+				<p>Aliquam sit amet gravida nibh, facilisis gravida odio.</p>
+				<a class="btn btn-danger" href ng-click="show('IAJ')">Update Daily Analisis JSON</a>
+			</div>
+		</div>
+		<div class="item">
+			<h2>Slide 2</h2>
+			<div class="carousel-caption">
+				<h3>Second slide label</h3>
+				<p>Aliquam sit amet gravida nibh, facilisis gravida odio.</p>
+				<a class="btn btn-danger" href ng-click="show('AJ')">Calc Daily Analisis</a>
+			</div>
+		</div>
+	</div>
+	<!-- Carousel nav -->
+	<a class="carousel-control left" href="#Algorithm" data-slide="prev">
+		<span class="glyphicon glyphicon-chevron-left"></span>
+	</a>
+	<a class="carousel-control right" href="#Algorithm" data-slide="next">
+		<span class="glyphicon glyphicon-chevron-right"></span>
+	</a>
+</div>

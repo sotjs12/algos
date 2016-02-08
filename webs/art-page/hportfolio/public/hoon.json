@@ -1,0 +1,140 @@
+{
+	"domain":"hoon",
+	"pageTitle":"coder hoon",
+	"displayName":"hoony",
+	"eMail":"sotjs12@naver.com",
+	"navFontColor":"#f7f7f7",
+	"artistSlogan":"Code ..... ha....siba...",
+	"artSlogan":"art!!!..",
+	"designSlogan":"design ..... ha....siba...",
+	"facebook":"https://www.facebook.com/profile.php?id=100009774337156",
+	"friends":["ngPark","hoon",""],
+	"mainBgImg":"img/hoon/pageImg/bgImg.jpg",
+	"socialImg":"img/hoon/pageImg/socialImg.jpg",
+	"artistInfo":{
+		"artistStatement":"<h3>power</h3>hello code World",
+		"potterImg":["hoon-p-1.jpg","hoon-p-2.jpg","hoon-p-3.jpg"]
+	},
+	"artImg":[
+		{
+			"title":"hello",
+			"metirial":"guri gangchul",
+			"size":"120 x 240 cm",
+			"date":"2015-8-15",
+			"description":"this is hello world!!",
+			"mainImg":"hoon-a-1-hello-main.jpg",
+			"artImgUrls":["hoon-a-1-hello-1.jpg","hoon-a-1-hello-2.jpg","test.jpg"]
+		},{
+			"title":"hi",
+			"metirial":"guri gangchul",
+			"size":"140 x 240 cm",
+			"date":"2015-8-15",
+			"description":"this is hihi !!",
+			"mainImg":"hoon-a-2-hi-main.jpg",
+			"artImgUrls":["hoon-a-2-hi-1.jpg","hoon-a-2-hi-2.jpg"]
+		},{
+			"title":"hello",
+			"metirial":"guri gangchul",
+			"size":"120 x 240 cm",
+			"date":"2015-8-15",
+			"description":"this is hello world!!",
+			"mainImg":"hoon-a-1-hello-main.jpg",
+			"artImgUrls":["hoon-a-1-hello-1.jpg","hoon-a-1-hello-2.jpg","test.jpg"]
+		},{
+			"title":"hello",
+			"metirial":"guri gangchul",
+			"size":"120 x 240 cm",
+			"date":"2015-8-15",
+			"description":"this is hello world!!",
+			"mainImg":"hoon-a-1-hello-main.jpg",
+			"artImgUrls":["hoon-a-1-hello-1.jpg","hoon-a-1-hello-2.jpg","test.jpg"]
+		},{
+			"title":"hello",
+			"metirial":"guri gangchul",
+			"size":"120 x 240 cm",
+			"date":"2015-8-15",
+			"description":"this is hello world!!",
+			"mainImg":"hoon-a-1-hello-main.jpg",
+			"artImgUrls":["hoon-a-1-hello-1.jpg","hoon-a-1-hello-2.jpg","test.jpg"]
+		},{
+			"title":"hello",
+			"metirial":"guri gangchul",
+			"size":"120 x 240 cm",
+			"date":"2015-8-15",
+			"description":"this is hello world!!",
+			"mainImg":"hoon-a-1-hello-main.jpg",
+			"artImgUrls":["hoon-a-1-hello-1.jpg","hoon-a-1-hello-2.jpg","test.jpg"]
+		},{
+			"title":"hello",
+			"metirial":"guri gangchul",
+			"size":"120 x 240 cm",
+			"date":"2015-8-15",
+			"description":"this is hello world!!",
+			"mainImg":"hoon-a-1-hello-main.jpg",
+			"artImgUrls":["hoon-a-1-hello-1.jpg","hoon-a-1-hello-2.jpg","test.jpg"]
+		},{
+			"title":"hello",
+			"metirial":"guri gangchul",
+			"size":"120 x 240 cm",
+			"date":"2015-8-15",
+			"description":"this is hello world!!",
+			"mainImg":"hoon-a-1-hello-main.jpg",
+			"artImgUrls":["hoon-a-1-hello-1.jpg","hoon-a-1-hello-2.jpg","test.jpg"]
+		},{
+			"title":"hello",
+			"metirial":"guri gangchul",
+			"size":"120 x 240 cm",
+			"date":"2015-8-15",
+			"description":"this is hello world!!",
+			"mainImg":"hoon-a-1-hello-main.jpg",
+			"artImgUrls":["hoon-a-1-hello-1.jpg","hoon-a-1-hello-2.jpg","test.jpg"]
+		},{
+			"title":"hello",
+			"metirial":"guri gangchul",
+			"size":"120 x 240 cm",
+			"date":"2015-8-15",
+			"description":"this is hello world!!",
+			"mainImg":"hoon-a-1-hello-main.jpg",
+			"artImgUrls":["hoon-a-1-hello-1.jpg","hoon-a-1-hello-2.jpg","test.jpg"]
+		}
+	],
+	"designImg":[
+		{
+			"title":"hello dd",		
+			"description":"this is hello dd world!!",
+			"mainImg":"1.jpg",
+			"designImgObject":[
+				{"dImg":"1.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}
+				,{"dImg":"2.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}
+				,{"dImg":"hoon-d-1-hello dd-1.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}				
+			]
+		},{
+			"title":"hello dd",		
+			"description":"this is hello dd world!!",
+			"mainImg":"1.jpg",
+			"designImgObject":[
+				{"dImg":"1.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}
+				,{"dImg":"2.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}
+				,{"dImg":"hoon-d-1-hello dd-1.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}				
+			]
+		},{
+			"title":"hello dd",		
+			"description":"this is hello dd world!!",
+			"mainImg":"1.jpg",
+			"designImgObject":[
+				{"dImg":"1.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}
+				,{"dImg":"2.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}
+				,{"dImg":"hoon-d-1-hello dd-1.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}				
+			]
+		},{
+			"title":"hello dd",		
+			"description":"this is hello dd world!!",
+			"mainImg":"1.jpg",
+			"designImgObject":[
+				{"dImg":"1.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}
+				,{"dImg":"2.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}
+				,{"dImg":"hoon-d-1-hello dd-1.jpg","dCaption":"untitled 01","dInfo":"jflkasdjfl rkrkadsjflasjdfl dsfjalskdfjla"}				
+			]
+		}
+	]
+}

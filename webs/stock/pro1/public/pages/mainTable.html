@@ -1,0 +1,31 @@
+<div class="panel panel-default">
+	Search: <input ng-model="searchText">
+	<div class="panel-body">
+		<h2>{{aData[0].dates}}</h2>      
+		<h3><a href="" class="btn btn-primary" role="button" ng-click="reverse = !reverse; order('',reverse)">{{orderLabel}}</a></h3>    
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th><a href="" ng-click="order('cName',reverse)">Company</a></th>
+					<th><a href="" ng-click="order('rsi',reverse)">RSI</a></th>
+					<th><a href="" ng-click="order('scs',reverse)">SCS</a></th>
+					<th><a href="" ng-click="order('macd',reverse)">MACD</a></th>
+					<th><a href="" ng-click="order('vr',reverse)">VR</a></th>
+					<th><a href="" ng-click="order('close',reverse)">Close</a></th>
+					<th>Pridiction</th>
+					<th><a href="" ng-click="order('longpre',reverse)">accuracy</a></th>
+				</tr>
+				<tr ng-repeat="r in aData | searchField : 'cName' | filter:searchText" >
+					<td><a href="#/analysis/{{r.symbol}}">{{ r.cName}}</a></td>
+					<td>{{ r.rsi }}</td>
+					<td>{{ r.scs }}</td>
+					<td>{{ r.macd }}</td>
+					<td>{{ r.vr }}</td>
+					<td>{{ r.close }}</td>
+					<td>{{ r.shortpre }}</td>
+					<td>{{ r.longpre }}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.edsk.ojt.model.UserMapper">
+
+    <resultMap id="userMap" type="kr.co.edsk.ojt.model.UserData">
+        <id property="id" column="USER_ID" />
+        <result property="nickname"       column="NICKNAME" />
+        <result property="password"       column="USER_PW" />
+        <result property="level"       column="LEVEL_CODE" />
+    </resultMap>
+
+    <select id="getAll" resultMap="userMap">
+        SELECT  * FROM USER_INFO
+    </select>
+
+    <select id="getById" resultMap="userMap">
+        SELECT  * FROM USER_INFO WHERE USER_ID = #{id}
+    </select>
+
+    <insert id="insert">
+         INSERT INTO USER_INFO ( USER_ID, NICKNAME, USER_PW, LEVEL_CODE ) VALUES (
+                #{id}
+              , #{nickname}
+              , #{password}
+              , #{level}
+         )
+    </insert>
+
+    <update id="update">
+         UPDATE USER_INFO SET
+              USER_ID = #{id},
+              NICKNAME = #{nickname},
+              USER_PW = #{password},
+              LEVEL_CODE = #{level}
+         WHERE USER_ID = #{id} LIMIT 1
+    </update>
+
+    <delete id="deleteById">
+         DELETE FROM USER_INFO WHERE USER_ID = #{id}
+    </delete>
+
+</mapper>

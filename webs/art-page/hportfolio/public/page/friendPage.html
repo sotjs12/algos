@@ -1,0 +1,20 @@
+<section id="friend" class="bg-light-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">other artists</h2> 
+                <h3>&nbsp</h3>               
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4" ng-repeat="buddy in page.friends track by $index">
+                <div class="team-member" ng-if="buddy != '' && husers[buddy] != null">
+                    <a href="/{{buddy}}">
+                        <img ng-src="{{'img/'+buddy+'/socialImg.jpg'}}" class="img-responsive img-circle">
+                        <h4>{{buddy}}</h4>
+                    </a>
+                </div>
+            </div>           
+        </div>
+    </div>
+</section>

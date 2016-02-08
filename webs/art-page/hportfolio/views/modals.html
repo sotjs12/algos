@@ -1,0 +1,188 @@
+<div  class="container" id="dModal">
+  <modal visible="showDesignSetModal">
+        <form class="form-horizontal" name="form">
+          <div class="container">
+            <button type="button" class="btn btn-primary" ng-click="newDesign()">Add New Item</button> 
+            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="setDesignCtrl()">Update</button> 
+            <div class="col-md-12" ng-repeat="design in tPage.designImg track by $index" style="border:1px solid #cfcfcf; margin:1em 0; padding:1em 0;">  
+              <div class="form-group"> 
+                <button type="button" class="btn btn-primary" ng-click="killDesign($index)">Kill This Design</button>
+                <label> TITLE: </label><input ng-model="design.title"/>
+                <label> SubTitle: </label><input ng-model="design.description"/>
+              </div>
+                
+              <div class="col-md-3 col-sm-6 portfolio-item" ng-repeat="url in design.designImgObject track by $index">
+                  <div class="embed-responsive embed-responsive-4by3" style="border:1px solid #cfcfcf;">    
+                          <img ng-src="{{design.designImgObject[$index].dImg}}" class="img-responsive" alt="NoImg"/>
+                  </div>
+                  <textarea rows="2" ng-model="design.designImgObject[$index].dImg" style="width:100%" placeholder="이곳에는 URL 이란놈을 넣어주세요 페북이나 인스타에 사진올리고->사진마우스 우클릭->이미지주소복사->여기붙붙"></textarea>
+                  <textarea rows="2" ng-model="design.designImgObject[$index].dInfo" style="width:100%" placeholder="사진설명을 써도되고 안써두되구 >_<!"></textarea>
+                  <button type="button" class="btn btn-primary" ng-click="removeDesign(design,$index)">Delete</button>             
+              </div> 
+              <div class="col-md-3 col-sm-6 portfolio-item" >
+                  <button type="button" class="btn btn-primary" ng-click="addDesign(design)">Add Img</button>             
+              </div>  
+            </div>
+          </div>                
+        </form>
+  </modal>
+</div>
+
+<div  class="container" id="dModal">
+  <modal visible="showArtSetModal">
+        <form class="form-horizontal" name="form">
+          <div class="container">
+            <button type="button" class="btn btn-primary" ng-click="newArt()">Add New Item</button> 
+            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="setArtCtrl()">Update</button> 
+            <div class="col-md-12" ng-repeat="art in tPage.artImg track by $index" style="border:1px solid #cfcfcf; margin:1em 0; padding:1em 0;">  
+              <button type="button" class="btn btn-primary" ng-click="killArt($index)">Kill This Art</button>
+              <label> TITLE: </label><input ng-model="art.title"/>
+              <label> DATE: </label><input ng-model="art.date"/>
+              <label> SIZE: </label><input ng-model="art.size"/> 
+              <label> 재료: </label><input ng-model="art.metirial"/> 
+              
+              <div class="form-group">          
+                <label  class="col-md-2 control-label">작품설명:</label>
+                <div class="col-md-10">
+                  <textarea ng-model="art.description" placeholder="작품에 대한 구체적인 설명과 당신이 이 작품을 만들게된 동기 그리고 이 작품에 대한 열정을 공감각적으로 구술하시오" style="width:100%"></textarea>
+                </div>
+              </div>
+                
+              <div class="col-md-3 col-sm-6 portfolio-item" ng-repeat="url in art.artImgUrls track by $index">
+                  <div class="embed-responsive embed-responsive-4by3" style="border:1px solid #cfcfcf;">    
+                          <img ng-src="{{url}}" class="img-responsive" alt="NoImg"/>
+                  </div>
+                  <textarea rows="2" ng-model="art.artImgUrls[$index]" style="width:100%" placeholder="이곳에는 URL 이란놈을 넣어주세요 페북이나 인스타에 사진올리고->사진마우스 우클릭->이미지주소복사->여기붙붙"></textarea>
+                  <button type="button" class="btn btn-primary" ng-click="removeArt(art,$index)">Delete</button>             
+              </div> 
+              <div class="col-md-3 col-sm-6 portfolio-item" >
+                  <button type="button" class="btn btn-primary" ng-click="addArt(art)">Add Img</button>             
+              </div>  
+            </div>
+          </div>                
+        </form>
+  </modal>
+</div>
+
+<div  class="container" id="dModal">
+  <modal visible="showAboutModal">
+        <form class="form-horizontal" name="form">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12 text-center">
+                  <h2 class="section-heading">{{page.displayName}}</h2>
+                  <h3 class="section-subheading text-muted">{{page.artistSlogan}}</h3>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="setAboutCtrl()">Update</button> 
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <input type='file' ng-model-instant onchange="angular.element(this).scope().imageUpload(this,'potter')" />
+                <img class="img-responsive img-centered" ng-src="{{tPage.artistInfo.potterImg}}"> 
+              </div>
+              <div class="col-xs-12 col-md-6" style="padding: 1em 2.5em;">
+                <label for="pageTitle" >Artist Statement</label>
+                <textarea rows="20" cols="50" class="form-control" ng-model="tPage.artistInfo.artistStatement" placeholder="작가의말인데... 왠지 이거는 꾸미고싶게만들어서 네이버메일이나 다음메일에서 메일쓰기하고 예쁘게 만들어서 밑에보면 html 버튼이있어요 이거누르면 코드로변환되요 이거가져와서 붙붙하면 좀예뻐보임 그러나 결과물은 동일하지않을수있음!"></textarea>
+              </div>  
+            </div> 
+          </div>                
+        </form>
+  </modal>
+</div> 
+<div  class="container">
+  <modal visible="showSetting">
+    <p>Settings 에 confirm 을 눌러야 최종변경완료임! 사진도... jpg 만 가능해요! 용량부족...능력부족 </p>
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="pageTitle" class="col-sm-2 control-label">domain</label>
+            <div class="col-sm-4">
+                <input class="form-control" ng-model="tPage.domain" ng-disabled="true">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="pageTitle" class="col-sm-2 control-label">PageTitle</label>
+            <div class="col-sm-4">
+                <input class="form-control" placeholder="왼쪽 상단 메인타이틀" ng-model="tPage.pageTitle">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="pageTitle" class="col-sm-2 control-label">about name</label>
+            <div class="col-sm-4">
+                <input class="form-control" placeholder="about page name" ng-model="tPage.displayName">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="navFontColor" class="col-sm-2 control-label">navFontColor</label>
+            <div class="col-sm-4">
+                <input class="form-control" placeholder="상단 네비게이션 font 컬러(스크롤시!)" ng-model="tPage.navFontColor">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="artistSlogan" class="col-sm-2 control-label">artistSlogan</label>
+            <div class="col-sm-4">
+                <input class="form-control" placeholder="about page slogan" ng-model="tPage.artistSlogan">
+            </div>
+          </div><div class="form-group">
+            <label for="artSlogan" class="col-sm-2 control-label">artSlogan</label>
+            <div class="col-sm-4">
+                <input class="form-control" placeholder="art page slogan" ng-model="tPage.artSlogan">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="designSlogan" class="col-sm-2 control-label">designSlogan</label>
+            <div class="col-sm-4">
+                <input class="form-control" placeholder="design page slogan" ng-model="tPage.designSlogan">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contact" class="col-sm-2 control-label">contact adress</label>
+            <div class="col-sm-4">
+                <input class="form-control" placeholder="contact e-mail" ng-model="tPage.eMail">
+            </div>
+          </div>                   
+          <div class="form-group">
+            <!-- <div ng-repeat="step in stepsModel">
+                <img class="thumb" ng-src="{{step}}" />
+            </div> -->
+            <label for="mainImg" class="col-sm-2 control-label">mainImg</label>
+            <input type='file' ng-model-instant onchange="angular.element(this).scope().imageUpload(this,'bg')" />
+                <img ng-src="{{tPage.mainBgImg}}" alt="nodata"style="width:30%;">                 
+          </div>
+          <div class="form-group">
+            <!-- <div ng-repeat="step in stepsModel">
+                <img class="thumb" ng-src="{{step}}" />
+            </div> -->
+            <label for="socialImg" class="col-sm-2 control-label">socialImg</label>
+            <input type='file' ng-model-instant onchange="angular.element(this).scope().imageUpload(this,'social')" />
+                <img ng-src="{{tPage.socialImg}}" class="img-circle" alt="nodata"style="width:30%;">                 
+          </div>
+          <div class="form-group">
+            <label for="Friends" class="col-sm-2 control-label">Friends List</label>
+            <div class="col-sm-12">
+                All User :<p ng-repeat="user in husers">{{user}}</p>
+            </div>
+            <div class="col-sm-3">
+                <input class="form-control" placeholder="Friend Domain" ng-model="tPage.friends[0]">
+            </div>
+            <div class="col-sm-3">
+                <input class="form-control" placeholder="Friend Domain" ng-model="tPage.friends[1]">
+            </div>
+            <div class="col-sm-3">
+                <input class="form-control" placeholder="Friend Domain" ng-model="tPage.friends[2]">
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="defulatPreSet()">Setting</button>
+          
+        </form>
+  </modal>
+</div>  
+
+<div  class="container">
+  <modal visible="showProgress">
+    <p>Caution!!! mob si slow ham</p>
+    <p>File upload: <span>{{progressPercentage}}%</span></p>
+    <div>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+    </div>  
+  </modal>
+</div>

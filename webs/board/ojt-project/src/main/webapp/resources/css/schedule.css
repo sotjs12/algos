@@ -1,0 +1,5 @@
+@CHARSET "UTF-8";
+
+.container .jumbotron, .container-fluid .jumbotron {
+    padding: 2em;
+}
