@@ -155,6 +155,7 @@
     <ClInclude Include="knightsTour.h" />
     <ClInclude Include="miro.h" />
     <ClInclude Include="permutation.h" />
+    <ClInclude Include="sorts.h" />
     <ClInclude Include="Virus.h" />
     <ClInclude Include="WERTYU.h" />
   </ItemGroup>

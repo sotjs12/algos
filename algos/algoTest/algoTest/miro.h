@@ -71,11 +71,11 @@ public:
 		}
 		if (minMove > move) {
 			minMove = move;
-			minMoveIdx = maps.size();
+			minMoveIdx = (int)maps.size();
 		}
 		if (minCurve > curve) {
 			minCurve = curve;
-			minCurveIdx = maps.size();
+			minCurveIdx = (int)maps.size();
 		}
 		int** map = new int*[yS];
 		for (int y = 0; y < yS; ++y) {

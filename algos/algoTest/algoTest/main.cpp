@@ -6,8 +6,19 @@
 #include "knightsTour.h"
 #include "miro.h"
 #include "Virus.h"
+#include "sorts.h"
 
 void main() {
-	EatMan e;
-	e.run();
+	int size = 10000;
+	int* arr = new int[size];
+	for (int i = 0; i < size; i++) {
+		arr[i] = rand();
+	}
+	sorts s;
+	s.selection_sort(arr, size);
+	s.insertion_sort(arr, size);
+	for (int i = 0; i < size; i++) {
+		arr[i] = rand();
+	}
+	s.do_quick_sort(arr, size);
 }
