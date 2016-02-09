@@ -15,10 +15,9 @@ void main() {
 		arr[i] = rand();
 	}
 	sorts s;
+	s.do_quick_sort(arr, size);
+	s.merge_sort(arr, 0, size - 1);
+	s.print(arr, size);
 	s.selection_sort(arr, size);
 	s.insertion_sort(arr, size);
-	for (int i = 0; i < size; i++) {
-		arr[i] = rand();
-	}
-	s.do_quick_sort(arr, size);
 }
