@@ -64,17 +64,45 @@ public:
 	}
 	void quick_sort(int* arr, int l, int h) {
 		if (h - l > 0) {
-			idx = l;
-			sidx = h;
-			while (1) {
-				while (arr[++idx] < arr[l]);
-				while (arr[--sidx] > arr[l]);
-				if (idx >= sidx)break;
-				swap(arr[idx], arr[sidx]);
+			int left = l;
+			int right = h;
+			while (left <= right) {
+				while (arr[left] <= arr[l] && left < right) ++left;
+				while (arr[right] > arr[l] && left <= right) --right;
+				if (left < right)swap(arr[left], arr[right]);
+				else break;
 			}
-			swap(arr[sidx], arr[l]);
-			quick_sort(arr, l, sidx - 1);
-			quick_sort(arr, sidx + 1, h);
+			swap(arr[right], arr[l]);
+			quick_sort(arr, l, right - 1);
+			quick_sort(arr, right + 1, h);
 		}
+	}
+
+	/*
+		merge sort 인데 nlogn 속도가 보장되는듯
+		분할에 logn 속도 합치는건 n으로 고정됨
+		근데 퀵보다 느리다는게 납득이 안감
+		퀵은 경우에따라서 swap횟수가 적어질수있어서 그런것같음...
+	*/
+	void merge(int* arr,int l,int h,int mid) {
+		idx = 0;
+		int left = l;
+		int right = mid + 1;
+		int *sub = new int[h - l + 1];
+
+		while (left <= mid && right <= h)
+			if (arr[left] < arr[right])	sub[idx++] = arr[left++];
+			else sub[idx++] = arr[right++];
+		while (left <= mid) sub[idx++] = arr[left++];
+		while (right <= h) sub[idx++] = arr[right++];
+		for (idx = l, sidx = 0; idx <= h;)arr[idx++] = sub[sidx++];
+		delete sub;
+	}
+	void merge_sort(int* arr, int l, int h) {
+		int mid = (l + h)/ 2;
+		if (h - l <= 0)return;
+		merge_sort(arr, l, mid);
+		merge_sort(arr, mid + 1, h);
+		merge(arr, l, h, mid);
 	}
 };
