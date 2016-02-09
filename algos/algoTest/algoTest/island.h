@@ -5,7 +5,7 @@ using namespace std;
 #define WAY_CASE 4
 #define WATER -1
 #define LAND 0
-
+#define MAX_SIZE 3000
 class Node {
 public:
 	int x;
@@ -15,7 +15,6 @@ public:
 		y = Y;
 	}
 };
-const int MAX_SIZE = 3000;
 class Queue {
 private:
 	Node* q[MAX_SIZE + 1];
