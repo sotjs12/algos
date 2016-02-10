@@ -22,7 +22,10 @@ public:
 	/*
 		선택정렬 n-1 번의 스왑만 발생, 스왑수가 적고 우선순위 큐로 비교량을 줄일수있음
 		이상적인 우선순위큐를 구현한다면 nlogn  속도
+		d
 	*/
+
+
 	void selection_sort(int* arr,int size) {
 		begin = clock();
 		for (idx = 0; idx < size; ++idx) {
