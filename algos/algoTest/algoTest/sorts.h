@@ -9,7 +9,7 @@ private:
 	clock_t begin, end;
 public:
 	void print(int* arr,int size) {
-		for (idx = 0; idx < 20; ++idx) 
+		for (idx = 0; idx < size; ++idx)
 			cout << arr[idx] << " ";
 		cout << endl;
 		cout << "수행시간 : " << (end - begin) << endl;
@@ -110,16 +110,18 @@ public:
 
 	/*
 		Shell 정렬
+		빠른지는 잘모르겠음
+		아주 올드한 정렬이라는데 무려 4중 for문이 돌고있음
+		시간복잡도 계산이 어렵다
 	*/
 	void shell_sort(int* arr, int size) {
 		begin = clock();
 		int jump = size;
 		int sidx2;
-		while (jump >= 1){
+		while (jump > 1){
 			jump = jump / 3 + 1;
 			for (idx = 0; idx < jump; ++idx){
-				for (sidx2 = idx; sidx2 < size; sidx2 + jump) {
-					sidx = sidx2;
+				for (sidx = idx; sidx < size; sidx = sidx + jump) {
 					while (sidx > 0 && (arr[sidx] < arr[sidx - 1])) {
 						swap(arr[sidx], arr[sidx - 1]);
 						--sidx;
@@ -130,4 +132,8 @@ public:
 		end = clock();
 		print(arr, size);
 	}
+
+	/*
+		heap 정렬
+	*/
 };

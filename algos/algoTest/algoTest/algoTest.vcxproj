@@ -149,6 +149,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dataStructures.h" />
     <ClInclude Include="doublets.h" />
     <ClInclude Include="eatMan.h" />
     <ClInclude Include="island.h" />
