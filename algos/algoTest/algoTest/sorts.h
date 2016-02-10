@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <time.h>
+#include "dataStructures.h"
 using namespace std;
 
 class sorts {
@@ -117,7 +118,6 @@ public:
 	void shell_sort(int* arr, int size) {
 		begin = clock();
 		int jump = size;
-		int sidx2;
 		while (jump > 1){
 			jump = jump / 3 + 1;
 			for (idx = 0; idx < jump; ++idx){
@@ -135,5 +135,59 @@ public:
 
 	/*
 		heap 정렬
+		우선순위큐를 어떻게 구현했느냐에따라 속도가 차이많이남.
+		우선순위큐 자료구조 특성상 배열1개만 사용하면 되고, size_t 개만큼의 배열을 담을수있다.
+		입력 및 삭제에 logn 속도가 나온다. 완전이진트리라 저 속도가 보장됨
+		힙 구성할때 nlogn 그리고 이를 다시 꺼낼때 nlogn 의 시간복잡도를 갖는다.
+		우선순위큐 라이브러리를 쓰면 젤 구현하기 쉬운 소팅방법.
+		아그럼 그냥 stl sort를 쓰겠구나..
 	*/
+	void heap_sort(int* arr, int size) {
+		begin = clock();
+		Heap h;
+		HeapNode* n;
+		int i = 0;
+		for (i = 0; i < size; ++i) {
+			h.insert_heap(arr[i]);
+		}
+		i = 0;
+		while ( (n = h.get_top()) != NULL) {
+			arr[i++] = n->data;
+			h.pop_heap();
+		}
+		end = clock();
+		print(arr, size);
+	}
+
+	/*
+		radix sort 기수정렬
+		이건 내가짰다기보단 거의 배꼈음... 위키에 너무잘나와있어서 멍때리고 보고쳐버림
+		시간복잡도 n 이란 매지컬한 성능을 보이는 정렬. 그러나 양의 정수에 한에서만 가능.
+		1의자리부터 10의자리까지(int 라고 가정함) 각 자리에대해서 작은순서로 나열함.
+		누적합을 이용하여 subArr 에 들어갈 자리를 확보함으로써 비교연산 및 교환을 하지않는다.
+		소팅중에 이해하기 가장 난해한 소팅임. 머리속에잘안그려짐
+	*/
+	void radix_sort(int* arr, int size) {
+		begin = clock();
+		int* subArr = new int[size];
+		int count[10];
+		int n;
+		int idx;
+		for (int i = 0; i < 10; ++i) {
+			for (int j = 0; j < 10; ++j) count[j] = 0;
+			n = (int)pow(10, i);
+			for (int j = 0; j < size; ++j) {
+				idx = (arr[j] / n) % 10;
+				count[idx]++;
+			}
+			for (int j = 1; j < 10; ++j) count[j] = count[j] + count[j - 1];//누적합
+			for (int j = size - 1; j >= 0; --j, --count[idx]) {
+				idx = (arr[j] / n) % 10;
+				subArr[count[idx] - 1] = arr[j];
+			}
+			for (int j = 0; j < size; ++j)arr[j] = subArr[j];
+		}
+		end = clock();
+		print(arr, size);
+	}
 };
