@@ -8,10 +8,8 @@
 #include "Virus.h"
 #include "sorts.h"
 #include "dataStructures.h"
-
-void main() {
-	sorts s;
-	int arr[] = { 45, 39, 98, 15, 52, 44, 33, 28, 40, 38, 77, 68, 11, 43 };
-	s.radix_sort(arr, 14);
-
+#include "backjoon.h"
+int main() {
+	teach t;
+	t.run();
 }
