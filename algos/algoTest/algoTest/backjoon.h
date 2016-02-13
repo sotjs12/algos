@@ -4,6 +4,74 @@
 using namespace std;
 
 
+class topDown {
+private:
+	int* origin;
+	int* min;
+	int* max;
+	int* min2;
+	int* max2;
+	int size;
+public:
+	void run() {
+		int i, j;
+		int m = -1, mx = 0;
+		int size2;
+		cin >> size2;
+		size = 3;
+		origin = new int[size];
+		min = new int[size];
+		min2 = new int[size];
+		max = new int[size];
+		max2 = new int[size];
+		for (j = 0; j < size; ++j) {
+			cin >> origin[j];
+			min2[j] = max2[j] = min[j] = max[j] = origin[j];
+		}
+		for (i = 1; i < size2; ++i) {
+			for ( j = 0; j < size; ++j) cin >> origin[j];
+			process();
+		}
+		for ( i = 0; i < size; ++i) {
+			if (max[i] > mx)mx = max[i];
+			if (min[i] < m || m == -1)m = min[i];
+		}
+		cout << mx << " " << m << endl;
+	}
+	void process() {
+		int j, m, mx;
+		////////////// min	 첫데이터넣기
+		if (min[0] > min[1]) m = min[1];
+		else m = min[0];
+		min2[0] = m + origin[0];
+		min2[1] = m + origin[1];
+		//////////////// max
+		if (max[0] < max[1]) mx = max[1];
+		else mx = max[0];
+		max2[0] = mx + origin[0];
+		max2[1] = mx + origin[1];
+
+		for (j = 2; j < size; ++j) {
+			/////////////min
+			if (min[j - 1] > min[j]) m = min[j];
+			else m = min[j - 1];
+			if (m + origin[j - 1] < min2[j - 1])
+				min2[j - 1] = m + origin[j - 1];
+			min2[j] = m + origin[j];
+			//////////////////max
+			if (max[j - 1] < max[j]) mx = max[j];
+			else mx = max[j - 1];
+			if (mx + origin[j - 1] > max2[j - 1])
+				max2[j - 1] = mx + origin[j - 1];
+			max2[j] = mx + origin[j];
+		}
+		for (j = 0; j < size; ++j) {
+			min[j] = min2[j];
+			max[j] = max2[j];
+		}
+	}
+};
+
 class ureka {
 private:
 	int* arr;

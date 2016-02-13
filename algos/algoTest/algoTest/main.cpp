@@ -11,6 +11,6 @@
 #include "backjoon.h"
 #include "waterBottle.h"
 int main() {
-	waterBottle w;
-	w.run();
+	topDown t;
+	t.run();
 }
