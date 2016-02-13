@@ -159,6 +159,7 @@
     <ClInclude Include="permutation.h" />
     <ClInclude Include="sorts.h" />
     <ClInclude Include="Virus.h" />
+    <ClInclude Include="waterBottle.h" />
     <ClInclude Include="WERTYU.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

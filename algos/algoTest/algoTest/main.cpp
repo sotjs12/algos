@@ -9,7 +9,8 @@
 #include "sorts.h"
 #include "dataStructures.h"
 #include "backjoon.h"
+#include "waterBottle.h"
 int main() {
-	teach t;
-	t.run();
+	waterBottle w;
+	w.run();
 }
