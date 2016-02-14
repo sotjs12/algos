@@ -1,8 +1,57 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <functional>
 using namespace std;
 
+class cupNode {
+public:
+	
+	int dead;
+	int re;
+	int compareKey;
+	cupNode(int d, int r) {
+		dead = d;
+		re = r;
+		compareKey = (re*10) / dead;
+	}
+	
+}; 
+bool cmp  (cupNode* cup, cupNode* cup2) {
+		if (cup->compareKey == cup2->compareKey)
+			return cup->dead < cup2->dead;
+	return cup->compareKey > cup2->compareKey;
+}
+class cupRamen {
+private:
+	vector<cupNode*> nodes;
+	int size;
+
+	
+public:
+	void run() {
+		int dead,re,max=0;
+		cin >> size;
+		for (int i = 0; i < size; ++i) {
+			cin >> dead >> re;
+			if (max < dead)max = dead;
+			nodes.push_back(new cupNode(dead, re));
+		}
+		sort(nodes.begin(), nodes.end(),cmp);
+		
+		dead = re = 0;
+		
+		for (int i = 0; i < size && max != 0; ++i) {
+			if (max < dead + nodes[i]->dead)continue;
+			if (nodes[i]->dead < dead)continue;
+			cout << re << endl;
+			dead += nodes[i]->dead;
+			re += nodes[i]->re;
+		}
+		cout << re << endl;
+	}
+};
 
 class topDown {
 private:
@@ -12,32 +61,7 @@ private:
 	int* min2;
 	int* max2;
 	int size;
-public:
-	void run() {
-		int i, j;
-		int m = -1, mx = 0;
-		int size2;
-		cin >> size2;
-		size = 3;
-		origin = new int[size];
-		min = new int[size];
-		min2 = new int[size];
-		max = new int[size];
-		max2 = new int[size];
-		for (j = 0; j < size; ++j) {
-			cin >> origin[j];
-			min2[j] = max2[j] = min[j] = max[j] = origin[j];
-		}
-		for (i = 1; i < size2; ++i) {
-			for ( j = 0; j < size; ++j) cin >> origin[j];
-			process();
-		}
-		for ( i = 0; i < size; ++i) {
-			if (max[i] > mx)mx = max[i];
-			if (min[i] < m || m == -1)m = min[i];
-		}
-		cout << mx << " " << m << endl;
-	}
+
 	void process() {
 		int j, m, mx;
 		////////////// min	 첫데이터넣기
@@ -69,6 +93,32 @@ public:
 			min[j] = min2[j];
 			max[j] = max2[j];
 		}
+	}
+public:
+	void run() {
+		int i, j;
+		int m = -1, mx = 0;
+		int size2;
+		cin >> size2;
+		size = 3;
+		origin = new int[size];
+		min = new int[size];
+		min2 = new int[size];
+		max = new int[size];
+		max2 = new int[size];
+		for (j = 0; j < size; ++j) {
+			cin >> origin[j];
+			min2[j] = max2[j] = min[j] = max[j] = origin[j];
+		}
+		for (i = 1; i < size2; ++i) {
+			for ( j = 0; j < size; ++j) cin >> origin[j];
+			process();
+		}
+		for ( i = 0; i < size; ++i) {
+			if (max[i] > mx)mx = max[i];
+			if (min[i] < m || m == -1)m = min[i];
+		}
+		cout << mx << " " << m << endl;
 	}
 };
 
