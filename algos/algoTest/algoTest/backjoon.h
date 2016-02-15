@@ -2,53 +2,65 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <functional>
-using namespace std;
 
+using namespace std;
 class cupNode {
 public:
-	
 	int dead;
-	int re;
-	int compareKey;
+	int reward;
 	cupNode(int d, int r) {
 		dead = d;
-		re = r;
-		compareKey = (re*10) / dead;
+		reward = r;
 	}
-	
-}; 
-bool cmp  (cupNode* cup, cupNode* cup2) {
-		if (cup->compareKey == cup2->compareKey)
-			return cup->dead < cup2->dead;
-	return cup->compareKey > cup2->compareKey;
+};
+bool compare_cup(cupNode* a, cupNode* b) {
+	return a->reward > b->reward;
 }
 class cupRamen {
 private:
-	vector<cupNode*> nodes;
-	int size;
-
-	
+	cupNode** arr;
+	int* buf;
+	int size;	
 public:
 	void run() {
-		int dead,re,max=0;
+		///// ÃÊ±âÈ­
+		int dead, re, max = 0, bufSize = 0;;
+		
 		cin >> size;
+		if (size < 1 || size >200000)return;
+		arr = new cupNode*[size];
 		for (int i = 0; i < size; ++i) {
 			cin >> dead >> re;
 			if (max < dead)max = dead;
-			nodes.push_back(new cupNode(dead, re));
+			arr[i] = new cupNode(dead, re);			
 		}
-		sort(nodes.begin(), nodes.end(),cmp);
-		
-		dead = re = 0;
-		
-		for (int i = 0; i < size && max != 0; ++i) {
-			if (max < dead + nodes[i]->dead)continue;
-			if (nodes[i]->dead < dead)continue;
-			cout << re << endl;
-			dead += nodes[i]->dead;
-			re += nodes[i]->re;
+		sort(arr, arr + size, compare_cup);
+		buf = new int[max+1];
+		for (int i = 0; i < max; ++i) buf[i] = 0;
+
+		for (int i = 0, idx = 0; i < size && bufSize != max; ++i) {
+			idx = arr[i]->dead;
+			re = arr[i]->reward;
+			if (buf[idx] == 0) {
+				buf[idx] = re;
+				bufSize++;
+			}
+			else {
+				for (int j = idx; j > 0; --j) {
+					if (buf[j] == 0) {
+						buf[j] = re;
+						bufSize++;
+						break;
+					}
+					else if (buf[j] < re) {
+						buf[j] = re;
+						break;
+					}
+				}
+			}
 		}
+		re = 0;
+		for (int i = 1; i <= max; ++i) re += buf[i];
 		cout << re << endl;
 	}
 };
