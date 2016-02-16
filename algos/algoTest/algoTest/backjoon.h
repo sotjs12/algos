@@ -4,6 +4,98 @@
 #include <algorithm>
 
 using namespace std;
+class Edge {
+public:
+	int from;
+	int to;
+	int weight;
+	Edge(int f, int t, int w) {
+		from = f;
+		to = t;
+		weight = w;
+	}
+};
+class Vertex {
+public:
+	int idx;
+	int edgeCnt = 0;
+	bool visited = false;
+	Edge* ways[10];
+	Vertex(int i) {
+		idx = i;
+		for (int i = 0; i < 10; ++i)ways[i] = NULL;
+	}
+	void addEdge(Edge* e) {
+		ways[e->to] = e;
+		edgeCnt++;
+	}
+};
+class tsp1 {
+private:
+	int size;
+	int startIdx;
+	int weight = 0;
+	Vertex** vertex;
+
+	void solve(Vertex* v,int subWeight,int cnt) {
+		if (cnt == size) {
+			v->visited = false;
+			if (v->ways[startIdx] == NULL)return;
+			else if (weight > subWeight + v->ways[startIdx]->weight || weight == 0) 
+				weight = subWeight + v->ways[startIdx]->weight;
+			return;
+		}
+		v->visited = true;
+		for (int i = 0; i < 10 ; ++i) {
+			if (v->ways[i] == NULL)continue; 
+			if (!vertex[i]->visited) {
+				solve(vertex[i], subWeight + v->ways[i]->weight, cnt + 1);
+			}
+		}
+		v->visited = false;
+	}
+public:
+	void run() {
+		int i, j,tmp;
+		cin >> size;
+		vertex = new Vertex*[size];
+		for (i = 0; i < size; ++i) vertex[i] = new Vertex(i);
+
+		for (i = 0; i < size; ++i) {
+			for (j = 0; j < size; ++j) {
+				cin >> tmp;
+				if (i != j && tmp != 0) vertex[i]->addEdge(new Edge(i,j,tmp));
+			}
+		}
+		for (i = 0; i < size; i++) {
+			startIdx = i;
+			solve(vertex[i], 0, 1);
+		}
+				
+		cout << weight << endl;
+	}
+};
+
+class coin1 {
+private:
+public:
+	void run() {
+		int i, j, cases, target;
+		int* coins;
+		int* mem;
+		cin >> cases >> target;
+		coins = new int[cases];
+		mem = new int[target + 1];
+		for (i = 0; i < cases; ++i) cin >> coins[i];
+		for (i = 0; i <= target; ++i) mem[i] = 0;
+		mem[0] = 1;
+		sort(coins, coins + cases);
+		for (i = 0; i < cases; ++i) 
+			for (j = coins[i]; j <= target; ++j)
+				mem[j] += mem[j - coins[i]];
+		cout << mem[target] << endl;
+	}
+};
 class cupNode {
 public:
 	int dead;
