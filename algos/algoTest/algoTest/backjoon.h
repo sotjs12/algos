@@ -4,6 +4,144 @@
 #include <algorithm>
 
 using namespace std;
+
+class exchange1 {
+private:
+	vector<int> arr;
+	vector<int> tArr;
+	vector<int> mask;
+	int val;
+	int ret = 0;
+	int size;
+	bool isduple = false;
+	int swap_bit(int v,int i1,int i2) {
+		int t1 = (v % mask[i1]) / (mask[i1] / 10);
+		int t2 = (v % mask[i2]) / (mask[i2] / 10);
+		v -= t1*(mask[i1] / 10);
+		v -= t2*(mask[i2] / 10);
+		v += t2*(mask[i1] / 10);
+		v += t1*(mask[i2] / 10);
+		return v;
+	}
+	void solve(int s,int subVal) {
+		if (s == size) {
+			if (ret < subVal)ret = subVal;
+			return;
+		}
+		for (int idx = (int)arr.size() - s - 1; ; --idx) {
+			if (idx <= 0) {
+				++s;
+				if(!isduple) subVal = swap_bit(subVal, 1, 0);
+				if (s == size) {
+					if (ret < subVal)ret = subVal;
+					break;
+				}
+				continue;
+			}
+			if (tArr[idx] == (subVal % mask[idx])/(mask[idx]/10))continue;
+			for (int j = idx - 1; j >= 0; --j) 
+				if (tArr[idx] == (subVal%mask[j]) / (mask[j] / 10)) 
+					solve(s + 1, swap_bit(subVal, idx, j));
+		}
+	}
+public:
+	void run() {
+		cin >> val >> size;
+		int tmp = val;
+		while (tmp != 0) {
+			tArr.push_back(tmp % 10);
+			tmp /= 10;
+		}
+		for (int i = (int)tArr.size() - 1, tmp = 10; i >= 0; --i) {
+			arr.push_back(tArr[i]);
+			mask.push_back(tmp);
+			tmp *= 10;
+		}
+		sort(tArr.begin(), tArr.end());
+		for (int i = 0; i < tArr.size()-1; ++i) 
+			if (tArr[i] == tArr[i + 1])isduple = true;
+		if (tArr.size() == 1) {
+			cout << "-1" << endl;
+			return;
+		}
+		if (tArr.size() == 2) {
+			if (arr[1] == 0) {
+				cout << "-1" << endl;
+				return;
+			}
+		}
+		solve(0, val);
+		cout << ret << endl;
+		
+	}
+};
+
+/*
+int mem[16][1 << 16] = { 0, };
+class tsp2 {
+private:
+	int max = 20000000;
+	int maps[16][16] = { { 0, }, };
+	int masks[16] = { 0, };
+	int startIdx;
+	int size;
+	int solve(int from, int visited, int len) {
+		if (visited == 0)return maps[from][startIdx];
+		if (mem[from][visited] != 0) return mem[from][visited];
+		int to = 0, next = 0, ret = max;
+		for (int i = 1; i < size; ++i) {
+			if (visited & masks[i]) {
+				to = (int)log2(masks[i]);
+				if(maps[from][to] != 0 && mem[from][to] < ret){
+					next = maps[from][to] + solve(to, visited & (~masks[i]), len - 1);
+					ret = min(ret, next);
+				}
+			}
+		}
+		return mem[from][visited] = ret;
+	}
+public:
+	void run() {
+		int i, j,tmp;
+		int visited = 0;
+		int ret = max;
+		cin >> size;
+		for (i = 0; i < 16; ++i)masks[i] = 1 << i;
+		for (i = 0; i < size; ++i)visited |= 1 << i;
+		for (i = 0; i < size; ++i)
+			for (j = 0; j < size; ++j)
+				cin >> maps[i][j];
+		for (i = 0,tmp=max; i < size; ++i) {
+			startIdx = i;
+			ret = min(ret, solve(startIdx, visited & (~masks[i]), size - 1));
+		}
+		cout << ret << endl;
+	}
+};
+*/
+class coin2 {
+private:
+	static const int max = 200000;
+	int coins[101] = { 0, };
+	int mem[10001] = { 0, };
+	int size;
+	int target;
+public:
+	void run() {
+		cin >> size >> target;
+		mem[0] = 0;
+		for (int i = 1; i <= target; ++i)mem[i] = max;
+		for (int i = 0; i < size; ++i) {
+			cin >> coins[i];
+			if (coins[i] <= target) mem[coins[i]] = 1;
+		}
+		for (int i = 0; i < size; ++i) 
+			for (int j = coins[i]; j <= target; ++j) 
+				mem[j] = min(mem[j], mem[j - coins[i]] + 1);
+		if(mem[target] != max)	cout << mem[target] << endl;
+		else cout << "-1" << endl;		
+	}
+};
 class Edge {
 public:
 	int from;

@@ -13,10 +13,9 @@
 
 using namespace std;
 
-
 int main()
 {
-	tsp1 t;
-	t.run();
+	exchange1 e;
+	e.run();
 	return 0;
 }
