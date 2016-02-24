@@ -15,7 +15,7 @@ using namespace std;
 
 int main()
 {
-	exchange1 e;
-	e.run();
+	pivo1 t;
+	t.run();
 	return 0;
 }

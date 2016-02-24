@@ -1,9 +1,184 @@
 #pragma once
-#include <iostream>
 #include <vector>
+#include <list>
+#include <string>
 #include <algorithm>
-
+#include <iostream>
 using namespace std;
+
+class dupleNum {
+private:
+	int size;
+	vector<int> arr;
+public:
+	void run() {
+		int i, j,minN;
+		cin >> size;
+		arr.resize(size + 1);
+		for ( i = 1; i <= size && i*i <=size;++i) arr[i*i] = 1;
+		for ( i = 1; i <= size; ++i) {
+			if (arr[i] == 1)continue;
+			minN = 999999999;
+			for (j = 1; j < i && j*j < i; ++j) {
+				minN = min(arr[i - j*j] + 1, minN);
+			}
+			arr[i] = minN;
+		}
+		cout << arr[size] << endl;
+	}
+};
+class floorUp {
+private:
+	int size;
+	int arr[301] = { 0, };
+	int mem[301][2] = { 0, };
+public:
+	void run() {
+		cin >> size;
+		for (int i = 1; i <= size; ++i)cin >> arr[i];
+		mem[1][1] = mem[1][0] = arr[1]; mem[2][0] = arr[2] + arr[1]; mem[2][1] = arr[2];
+		for (int i = 3; i <= size; ++i) {
+			mem[i][0] = mem[i - 1][1] + arr[i];
+			mem[i][1] = max(mem[i - 2][0], mem[i - 2][1]) + arr[i];
+		}
+		cout << max(mem[size][0],mem[size][1]) << endl;;
+	}
+};
+class fibo2 {
+private:
+	void calc(int size) {
+		int a = 1, b = 0;
+		int a2 = 0, b2 = 1;
+		for (int i = 1, tmp; i < size; ++i) {
+			tmp = b;
+			b = a + b;
+			a = tmp;
+			tmp = b2;
+			b2 = a2 + b2;
+			a2 = tmp;
+		}
+		if(size == 0)cout <<"1 0"<< endl;
+		else if (size == 1)	cout << "0 1" << endl;
+		else cout << b << " " << b2 << endl;
+	}
+public:
+	void run() {
+		int size; 
+		cin >> size;
+		for (int i = 0,tmp; i < size; ++i) {
+			cin >> tmp;
+			calc(tmp);
+		}
+	}
+};
+class pivo1 {
+public:
+	void run() {
+		int size;
+		unsigned long long a=0, b=1;
+		cin >> size;
+		for (unsigned long long i = 1,tmp; i < size; ++i) {
+			tmp = b;
+			b = a + b;
+			a = tmp;
+		}
+		 cout << b << endl;
+	}
+};
+class rgbHouse {
+private:
+	int size;
+	int arr[1000][3];
+	int mem[1000][3];
+	
+public:
+	void run() {
+		int i, j;
+		cin >> size;
+		for (i = 0; i < size; ++i)for(j = 0; j < 3; ++j)cin >> arr[i][j];
+		mem[0][0] = arr[0][0]; mem[0][1] = arr[0][1]; mem[0][2] = arr[0][2];
+		for (i = 1; i < size; ++i) {
+			mem[i][0] = min(mem[i - 1][1], mem[i - 1][2]) + arr[i][0];
+			mem[i][1] = min(mem[i - 1][0], mem[i - 1][2]) + arr[i][1];
+			mem[i][2] = min(mem[i - 1][1], mem[i - 1][0]) + arr[i][2];
+		}
+		cout << min(min(mem[size - 1][0], mem[size - 1][1]), mem[size - 1][2]);
+	}
+};
+class editor {
+private:
+	int size;
+	list<char> lst;
+	string line;
+public:
+	void run() {
+		char com;
+		cin >> line;
+		for (int i = 0; i < line.length(); ++i)lst.push_back(line[i]);
+		cin >> size;
+		auto it = lst.end();
+		for (int i = 0; i < size; ++i) {
+			cin >> com;
+			switch (com)
+			{
+			case 'P':
+				cin >> com;
+				lst.insert(it, com);
+				break;
+			case 'L':
+				if (it != lst.begin())it--;
+				break;
+			case 'D':
+				if (it != lst.end())it++;
+				break;
+			case 'B':
+				if (it != lst.begin()) {
+					auto it2 = it;
+					lst.erase(--it);
+					it = it2;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		auto it2 = lst.begin();
+		while (it2 != lst.end())cout << *it2++;
+		cout << endl;
+	}
+};
+class tri_tilling {
+private:
+	int mem[31] = { 1,0,3 };
+	int size;
+public:
+	void run() {
+		cin >> size;
+		for (int i = 4; i <= size; ++i) {
+			mem[i] = mem[i - 2] * 4 - mem[i - 4];
+		}
+		cout << mem[size] << endl;
+	}
+};
+class LIS1 {
+private:
+	int size;
+	int arr[1000] = { 0, };
+	int mem[1000] = { 0, };
+	int max = 0;
+public:
+	void run() {
+		cin >> size;	
+		for (int i = 0; i < size; ++i) {
+			cin >> arr[i];
+			mem[i] = 1;
+			for (int j = 0; j < i; ++j) 
+				if (arr[i] > arr[j] && ((mem[j] + 1) > mem[i])) mem[i] = mem[j] + 1;
+		}		
+		for (int i = 0; i < size; ++i)if (mem[i]>max)max = mem[i];
+		cout << max;
+	}
+};
 
 class exchange1 {
 private:
