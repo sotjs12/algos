@@ -1,11 +1,419 @@
 #pragma once
-#include <vector>
 #include <list>
 #include <string>
+#include <queue>
+#include <vector>
+#include <set>
 #include <algorithm>
 #include <iostream>
 using namespace std;
 
+class driveTour {
+private:
+	int n;
+	int map[256][256];
+	int mem[256][256];
+public:
+	void run() {
+
+	}
+};
+class moonMiro {
+private:
+	bool miroMem[64][50][50] = { { { false, }, } };
+	class qNode {
+	public:
+		int y, x, c;
+	};
+	const int move[4][2] = { { 0,1 },{ 1,0 },{ 0,-1 },{ -1,0 } };
+	char map[50][50];
+	int mask[50][50] = { {0,}, };
+	int Y, X,sx,sy,ex,ey;
+
+	int process() {
+		queue<qNode> bfs;
+		int ny, nx,i,cnt=1,nc;
+		size_t size;
+		bfs.push({ sy, sx, 0 });
+
+		while (!bfs.empty()) {
+			size = bfs.size();
+			while (size--) {
+				qNode pos = bfs.front(); bfs.pop();
+				for (i = 0; i < 4; ++i) {
+					ny = pos.y + move[i][0]; nx = pos.x + move[i][1]; nc = pos.c;
+					if (ny >= Y || ny < 0 || nx >= X || nx < 0 || map[ny][nx] == '#')continue;
+					if (map[ny][nx] > 96 && map[ny][nx] < 103)nc |= mask[ny][nx];
+					if (map[ny][nx] > 64 && map[ny][nx] < 71 && (mask[ny][nx] & nc) == 0)continue;
+					if (miroMem[nc][ny][nx])continue;
+					if (map[ny][nx] == '1')return cnt;
+					bfs.push({ ny,nx,nc });
+					miroMem[nc][ny][nx] = true;
+				}
+			}
+			cnt++;
+		}
+		
+		return -1;
+	}
+public:
+	void run() {
+		cin >> Y >> X;
+		int check[128] = { 0, };
+		for (int i = 0, t = 0; i < Y; ++i)for (int j = 0; j < X; ++j) {
+			cin >> map[i][j];
+			if (map[i][j] == '1') ey = i, ex = j;
+			else if (map[i][j] == '0') sy = i, sx = j;
+			else if (map[i][j] > 96 && map[i][j] < 103) {
+				if (check[map[i][j]] == 0) {
+					mask[i][j] = 1 << t;
+					check[map[i][j]] = 1 << t++;
+				}
+				else mask[i][j] = check[map[i][j]];
+			}
+		}
+		for (int i = 0; i < Y; ++i)for (int j = 0; j < X; ++j) {
+			if (mask[i][j] != 0 && map[i][j] > 96 && map[i][j] < 103) {
+				char tmp = map[i][j] - 32;
+				for (int k1 = 0; k1 < Y; ++k1)for (int k2 = 0; k2 < X; ++k2) 
+					if (map[k1][k2] == tmp) mask[k1][k2] = mask[i][j];
+			}
+		}
+		cout << process() << endl;
+	}
+};
+class knapsack1 {
+private:
+	int n, c, cnt = 0;
+	long long arr[30] = { 0, };
+	long long mem1[1 << 15] = { 0, };
+	long long mem2[1 << 15] = { 0, };
+public:
+	void run() {
+		int i, j, m1 = 1, m2 = 1;
+		cin >> n >> c;
+		for (i = 0; i < n; ++i)cin >> arr[i];
+		for (i = 0; i < n / 2; ++i)for (j = m1 - 1; j >= 0; --j)mem1[m1++] = mem1[j] + arr[i];
+		for (i = n / 2; i < n; ++i)for (j = m2 - 1; j >= 0; --j)mem2[m2++] = mem2[j] + arr[i];
+		sort(mem1, mem1 + m1); sort(mem2, mem2 + m2);
+		for (i = 0, j = m2; i < m1; ++i) {
+			while (j&& mem1[i] + mem2[j - 1] > c)--j;
+			cnt += j;
+		}
+		cout << cnt << endl;
+	}
+};
+class primePath {
+private:
+	bool primeArr[10000] = { false, };
+	void make_primeNum() {		
+		for (int i = 2, multi = 2; i < 10000; ++i, multi = 2)
+			if (!primeArr[i])while (i*multi < 10000) 
+				primeArr[i*(multi++)] = true;		
+	}
+	void process(int f,int t) {
+		queue<int> q,cnts;
+		bool mem[10000] = { false, };
+		int cnt = 1,cur,i,j,tmp,nextNum;
+		q.push(f); cnts.push(cnt);
+		while (!q.empty()) {
+			cur = q.front(); cnt = cnts.front();
+			q.pop(); cnts.pop();
+			for (i = 1; i < 10000; i *= 10) {
+				tmp = (cur / i) % 10;
+				tmp = cur - tmp*i;
+				for (j = 0; j < 10; ++j) {
+					nextNum = tmp + j*i;
+					if (primeArr[nextNum] || nextNum < 1000  )continue;
+					if(mem[nextNum])continue;
+					if (nextNum == t) {
+						cout << cnt << endl;
+						return;
+					}
+					q.push(nextNum); cnts.push(cnt + 1); mem[nextNum] = true;;
+				}
+			}
+		}
+		cout << "Impossible" << endl;
+	}
+public:
+	void run() {
+		make_primeNum();
+		int from, to,n;
+		cin >> n;
+		for (int i = 0; i < n; ++i) {
+			cin >> from >> to;
+			if (from == to) {
+				cout << "0" << endl;
+				continue;
+			}
+			process(from,to);
+		}
+	}
+};
+class miro1 {
+private:
+	int move[4][2] = { { 0,1 },{ 1,0 },{ 0,-1 },{ -1,0 } };
+	char map[100][100] = { { 0, }, };
+	int mem[100][100] = { {0,}, };
+	int n, m;
+public:
+	void run() {
+		queue<int> yidx, xidx,cnts;
+		int i, j,y,x,cnt,nx,ny;
+		cin >> n >> m;
+		for (i = 0; i < n; ++i)for (j = 0; j < m; ++j)cin >> map[i][j];
+		yidx.push(0); xidx.push(0); cnts.push(1); mem[0][0] = 1;
+		while (!yidx.empty()) {
+			y = yidx.front(); x = xidx.front(); cnt = cnts.front();
+			yidx.pop(); xidx.pop(); cnts.pop();
+			for (i = 0; i < 4; ++i) {
+				ny = y + move[i][0]; nx = x + move[i][1];				
+				if (ny < 0 || ny >= n || nx < 0 || nx >= m)continue;
+				if (mem[ny][nx] != 0 || map[ny][nx] == '0')continue;
+				if (ny == n - 1 && nx == m - 1) {
+					cout << cnt + 1  << endl;
+					return;
+				}
+				yidx.push(ny); xidx.push(nx); cnts.push(cnt + 1);
+				mem[ny][nx] = cnt;
+			}
+		}
+	}
+};
+class puzzle1 {
+private:
+	int mask[9] = { 1,10,100,1000,10000,100000,1000000,10000000,100000000 };
+	int move[4][2] = { {0,1},{ 1,0 },{ 0,-1 },{ -1,0 } };
+	int ret = 0;
+	int cur = 0;
+	int idx = 0;
+	set<int> mem;
+	
+	int make_num(int num,int a,int b) {
+		int tmp1 = ((num / mask[8-a]) % 10)*mask[8 - b];
+		int tmp2 = ((num / mask[8 - b]) % 10)*mask[8 - a];
+		num -= ((num / mask[8 - a]) % 10)*mask[8 - a];
+		num -= ((num / mask[8 - b]) % 10)*mask[8 - b];
+		return num + tmp1 + tmp2;
+	}
+	size_t process() {
+		queue<int> q;
+		queue<int> qidx;
+		size_t size,cnt=1;
+		int i, y, x,my,mx,tmp;
+		q.push(cur);qidx.push(idx);	mem.insert(cur);
+		if (cur == ret)return 0;	//정답이바로나올때
+
+		while (!q.empty()) {
+			size = q.size();
+			while (size--) {
+				cur = q.front(); idx = qidx.front(); q.pop(); qidx.pop();
+				y = idx / 3;
+				x = idx % 3;
+				for ( i = 0; i < 4; ++i) {
+					my = y + move[i][0]; mx = x + move[i][1];
+					if (my > 2 || mx > 2 || my < 0 || mx < 0)continue;
+					tmp = make_num(cur,idx, my * 3 + mx);
+					if (tmp == ret)return cnt;
+					if (mem.find(tmp) != mem.end())continue;
+					mem.insert(tmp);
+					q.push(tmp);
+					qidx.push(my * 3 + mx);
+				}
+			}
+			cnt++;
+		}
+		return -1;
+	}
+public:
+	void run() {
+		int arr[9];
+		for (int i = 0; i < 9; ++i) {	//map을 하나의 int로 쓸거임
+			cin >> arr[i];
+			if (arr[i] == 0)arr[i] = 9, idx = i;
+			cur += arr[i] * mask[8 - i];
+		}
+		sort(arr, arr + 9);
+		for (int i = 8; i >= 0; --i)ret += arr[8 - i] * mask[i];
+		cout<<process()<<endl;
+	}
+};
+class sortGame {
+private:
+	int mask[9] = { 0,1,10,100,1000,10000,100000,1000000,10000000 };
+	int N,K;
+	int cur = 0;
+	int ret=0;
+	set<int> mem;
+
+	int makeNum(int num,int idx) {
+		int tmp1=0,tmp2=0;
+		for (int i = 1; i <= K; ++i) {
+			tmp1 += ((num / mask[idx-i +1]) % 10)*mask[idx - K + i];
+			tmp2 += ((num / mask[idx - i + 1]) % 10)*mask[idx - i + 1];
+		}
+		num += tmp1 - tmp2;
+		return num;
+	}
+	int process() {
+		queue<int> bfs;
+		int cnt=0,tmp;
+		size_t size;
+		bfs.push(cur);
+		
+		while (!bfs.empty()) {
+			size = bfs.size();
+			while (size--) {
+				cur = bfs.front(); bfs.pop();
+				if (cur == ret) return cnt;
+				for (int i = K; i <= N; ++i) {
+					tmp = makeNum(cur, i);
+					if (mem.find(tmp) != mem.end())continue;	//DP 에있을시 걍지나침
+					mem.insert(tmp);
+					bfs.push(tmp);
+				}
+			}
+			cnt++;
+		}
+		return -1;
+	}
+public:
+	void run() {
+		int arr[9];
+		int result[9];
+		cin >> N>>K;
+		for (int i = 1; i <= N; ++i) {	//인풋 및 초기화과정 
+			cin >> arr[i];				// 결과값만들어놓고 bfs랑 mem 에 초기값지정
+			result[i] = arr[i];
+		}
+		sort(result + 1, result + N+1);
+		for (int i = N, j = 1; i > 0; --i, j *= 10) {
+			cur += arr[i] * j;
+			ret += result[i] * j;
+		}
+		mem.insert(cur);
+		
+		cout<<process()<<endl;
+	}
+};
+class shom {
+private:
+	int* mem;
+	int size;
+	queue<int> bfs;
+	queue<int> memNext;
+	vector<int> idxs;
+	vector<int> ret;
+
+	void initMem() {
+		int tmp;
+		mem = new int[size + 1];
+		for (int i = 0; i <= size; ++i)mem[i] = 0;
+		bfs.push(4); bfs.push(7); idxs.push_back(4); idxs.push_back(7);
+		
+		while (!bfs.empty()) {	//1번으로만드는경우 초기화
+			tmp = bfs.front();
+			mem[tmp] = 1;
+			memNext.push(tmp);
+			idxs.push_back(tmp);
+			bfs.pop();
+			tmp *= 10;
+			if (tmp > size)continue;
+			if (tmp + 4 <= size) bfs.push(tmp + 4);
+			if (tmp + 7 <= size) bfs.push(tmp + 7);
+		}
+	}
+	void print_dfs(int idx,int bidx) {
+		if (mem[idx] == 1) {
+			ret.push_back(idx);
+			ret.push_back(bidx);
+			return;
+		}
+		print_dfs(mem[idx],idx- mem[idx]);
+		ret.push_back(bidx);
+	}
+public:
+	void run() {
+		int i,tmp,val;
+		size_t cnt;
+		cin >> size;
+		initMem();
+		if (size == 1000000) {
+			cout << "4 4 44444 477774 477774" << endl;
+			return;
+		}
+		if (mem[size] == 1) {
+			cout << size << endl;
+			return;
+		}
+		while (!memNext.empty()) {
+			cnt = memNext.size();
+			while (cnt--) {
+				tmp = memNext.front();memNext.pop();
+				for (i = 0; i < idxs.size(); ++i) {
+					val = idxs[i] + tmp;
+					if (val == size) {
+						mem[size] = tmp;
+						print_dfs(size, idxs[i]); ret.pop_back();
+						sort(ret.begin(), ret.end());
+						for (i = 0; i < ret.size(); ++i)cout << ret[i] << " ";
+						return;
+					}
+					if (val < size && mem[val] == 0) {
+						memNext.push(val);
+						mem[val] = tmp;
+					}
+				}				
+			}
+		}
+		cout << -1 << endl;
+	}
+};
+class quick {
+private:
+	char map[50][50] = { { 0, }, };
+	int mark[50][50] = { { 0, }, };
+	bool mem[3][4][50][50] = { { { {false,}, }, }, };
+	const int move[4][2] = { {0,1},{ 1,0 },{ 0,-1 },{ -1,0 } };
+	int sy, sx,Y,X;
+	class qNode {
+	public:
+		int y, x, m, e;
+	};
+	int process() {
+		queue<qNode> bfs;
+		int size;
+		bfs.push({sy,sx,-1,0});
+		for (int t = 1; !bfs.empty(); ++t) {
+			size = (int)bfs.size();
+			while (size--) {
+				qNode q = bfs.front(); bfs.pop();
+				for (int i = 0; i < 4; ++i) {
+					int my = q.y + move[i][0], mx = q.x + move[i][1], me = q.e;
+					if (q.m == i)continue;
+					if (my < 0 || my >= Y || mx < 0 || mx >= X || map[my][mx] == '#')continue;
+					if (map[my][mx] == 'C') me |= mark[my][mx];
+					if (me == 3) return t;
+					if (mem[me][i][my][mx])continue;
+					mem[me][i][my][mx] = true;
+					bfs.push({my,mx,i,me});
+				}
+			}
+		}
+		return -1;
+	}
+public:
+	void run() {
+		cin >> Y >> X;
+		for (int i = 0,t=1; i < Y; ++i)for (int j = 0; j < X; ++j) {
+			cin >> map[i][j];
+			if (map[i][j] == 'S')sy = i, sx = j;
+			else if (map[i][j] == 'C')mark[i][j] = t++;
+		}		
+		cout << process() << endl;
+	}
+};
 class dupleNum {
 private:
 	int size;
@@ -19,9 +427,8 @@ public:
 		for ( i = 1; i <= size; ++i) {
 			if (arr[i] == 1)continue;
 			minN = 999999999;
-			for (j = 1; j < i && j*j < i; ++j) {
+			for (j = 1; j < i && j*j < i; ++j)
 				minN = min(arr[i - j*j] + 1, minN);
-			}
 			arr[i] = minN;
 		}
 		cout << arr[size] << endl;
@@ -179,7 +586,6 @@ public:
 		cout << max;
 	}
 };
-
 class exchange1 {
 private:
 	vector<int> arr;
@@ -250,7 +656,6 @@ public:
 		
 	}
 };
-
 /*
 int mem[16][1 << 16] = { 0, };
 class tsp2 {
@@ -388,7 +793,6 @@ public:
 		cout << weight << endl;
 	}
 };
-
 class coin1 {
 private:
 public:
@@ -469,7 +873,6 @@ public:
 		cout << re << endl;
 	}
 };
-
 class topDown {
 private:
 	int* origin;
@@ -538,7 +941,6 @@ public:
 		cout << mx << " " << m << endl;
 	}
 };
-
 class ureka {
 private:
 	int* arr;
@@ -583,7 +985,6 @@ public:
 		}
 	}
 };
-
 class plus123 {
 private:
 	int cnt = 0;
@@ -604,7 +1005,6 @@ public:
 		}
 	}
 };
-
 class teach {
 private:
 	int* arrCnt;

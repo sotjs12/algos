@@ -11,11 +11,8 @@
 #include "backjoon.h"
 #include "waterBottle.h"
 
-using namespace std;
-
-int main()
-{
-	pivo1 t;
-	t.run();
+int main() {
+	driveTour k;
+	k.run();
 	return 0;
 }
