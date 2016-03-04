@@ -8,14 +8,110 @@
 #include <iostream>
 using namespace std;
 
-class driveTour {
+
+
+class moonTour {
 private:
-	int n;
-	int map[256][256];
-	int mem[256][256];
+	double absT = (1.0e-8);
+	static int CompareD(double x, double y)
+	{
+		double absTolerance = (1.0e-8);
+		double diff = x - y;
+		if (fabs(diff) <= absTolerance)
+			return 0;
+
+		return (diff > 0) ? 1 : -1;
+	}
+	class point {
+	public:
+		double y, x;
+		double l, r;
+		static bool before(const point& p1, const point& p2) {
+			if (CompareD(p1.x, p2.x) == 0)
+				if (CompareD(p1.y, p2.y) == 1) return false;
+				else return true;
+			if (CompareD(p1.x, p2.x) == 1) return false;
+			else return true;
+		}
+	};
+	double calc_distance(point& p1, point& p2) {return sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y));}
+	vector<point> arr;	
+	vector<double> mem;
 public:
 	void run() {
-
+		double y,x,ret;
+		int t, n,s,e;
+		cin >> t;
+		while (t--) {
+			cin >> n;
+			mem.clear(), mem.resize(n), ret = 0, arr.clear();
+			for (int i = 0; i < n; ++i) {
+				cin >> x >> y;
+				arr.push_back({ y,x });
+			}
+			sort(arr.begin(), arr.end(), point::before);
+			for (int i = 1; i < n; ++i) {
+				if (CompareD(arr[i].x, arr[i - 1].x) == 0) {
+					for (s = i - 1, e = i; CompareD(arr[e].x, arr[e - 1].x) == 0 && e < n; ++e);
+					for (int j = s; j < e && s != 0; ++j) arr[j].l = calc_distance(arr[s - 1], arr[j]);
+					for (int j = s; j < e && e != n; ++j) arr[j].r = calc_distance(arr[e], arr[j]);
+					double minR = 90000000;
+					for (int j = s; j < e; ++j) 
+						minR = min(minR, abs((arr[j].y - arr[s].y) * 2) + abs((arr[j].y - arr[e - 1].y) * 2) + arr[j].l + arr[j].r);
+					ret += minR;
+				}
+				else ret += calc_distance(arr[i], arr[i - 1]);
+			}
+			cout << ret*2 << endl;
+		}
+	}
+};
+class charMatch_9996 {
+private:
+	int size;
+	string pattern,sub1,sub2;
+public:
+	void run() {
+		size_t idx,idx2;
+		string tmp;
+		cin >> size >> pattern;
+		idx = pattern.find('*', 0);
+		sub1 = pattern.substr(0, idx);
+		sub2 = pattern.substr(idx + 1, pattern.length());
+		while (size--)
+		{
+			cin >> tmp;
+			if (sub1.length() + sub2.length() >= tmp.length())
+			{
+				cout << "NE" << endl;
+				continue;
+			}
+			idx = tmp.find(sub1); 
+			idx2 = tmp.length() - sub2.length();
+			if (idx == 0 && tmp.find(sub2, idx2) == idx2)cout << "DA" << endl;
+			else cout << "NE" << endl;
+		}
+	}
+};
+class litle_king_1004 {
+private:
+public:
+	void run() {
+		int c, sy, sx, ey, ex, size, x, y, r, ret1, ret2,cnt;
+		cin >> c;
+		while (c--)
+		{
+			cin >> sx >> sy >> ex >> ey >> size; cnt = 0;
+			while (size--)
+			{
+				cin >> x >> y >> r;
+				r *= r;
+				ret1 = (sx - x)*(sx - x) + (sy - y)*(sy - y);
+				ret2 = (ex - x)*(ex - x) + (ey - y)*(ey - y);
+				if (ret1 < r && ret2 > r || ret1 < r && ret2 < r)cnt++;
+			}
+			cout << cnt << endl; 
+		}
 	}
 };
 class moonMiro {
