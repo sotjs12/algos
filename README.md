@@ -1,1 +1,1 @@
-hoon's algorithm challenges.
+Hoon's Algorithm / Web Project repository
