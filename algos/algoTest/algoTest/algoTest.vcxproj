@@ -149,6 +149,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="backjoon.h" />
+    <ClInclude Include="dataStructures.h" />
     <ClInclude Include="doublets.h" />
     <ClInclude Include="eatMan.h" />
     <ClInclude Include="island.h" />
@@ -157,6 +159,7 @@
     <ClInclude Include="permutation.h" />
     <ClInclude Include="sorts.h" />
     <ClInclude Include="Virus.h" />
+    <ClInclude Include="waterBottle.h" />
     <ClInclude Include="WERTYU.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

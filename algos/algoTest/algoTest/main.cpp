@@ -7,8 +7,12 @@
 #include "miro.h"
 #include "Virus.h"
 #include "sorts.h"
+#include "dataStructures.h"
+#include "backjoon.h"
+#include "waterBottle.h"
 
-void main() {
-	EatMan e;
-	e.find_with_bfs();
+int main() {
+	charMatch_9996 k;
+	k.run();
+	return 0;
 }

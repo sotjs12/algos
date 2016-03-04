@@ -47,5 +47,14 @@
     <ClInclude Include="sorts.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="dataStructures.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="backjoon.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="waterBottle.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
