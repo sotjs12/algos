@@ -10,9 +10,11 @@
 #include "dataStructures.h"
 #include "backjoon.h"
 #include "waterBottle.h"
+#include "algospot.h"
 
-int main() {
-	charMatch_9996 k;
-	k.run();
+int main()
+{
+	NUMB3RS p;
+	p.run();
 	return 0;
 }

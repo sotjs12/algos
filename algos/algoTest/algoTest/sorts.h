@@ -4,6 +4,22 @@
 #include "dataStructures.h"
 using namespace std;
 
+//count bit
+int SWAR(unsigned int i)
+{
+	i = i - ((i >> 1) & 0x55555555);
+	i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
+	return (((i + (i >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
+}
+int bc(int x) {
+	int ret = 0;
+	while (x > 0) {
+		++ret;
+		x &= x - 1;
+	}
+	return ret;
+}
+/////count bit
 class sorts {
 private:
 	int idx,sidx,min,temp;

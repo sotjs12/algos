@@ -149,6 +149,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="algospot.h" />
     <ClInclude Include="backjoon.h" />
     <ClInclude Include="dataStructures.h" />
     <ClInclude Include="doublets.h" />

@@ -9,60 +9,211 @@
 using namespace std;
 
 
-
-class moonTour {
+class BOJ_10218
+{
 private:
-	double absT = (1.0e-8);
-	static int CompareD(double x, double y)
+	int n, m,ex,ey;
+	int move[4][2] = { {0,-1},{ 0,1 },{ -1,0 },{ 1,0 } };
+	bool check[4] = { false, };
+	char out[4] = { 'L','R','U','D' };
+	char map[11][11];
+	int visited[11][11];
+	void solve()
 	{
-		double absTolerance = (1.0e-8);
-		double diff = x - y;
-		if (fabs(diff) <= absTolerance)
-			return 0;
-
-		return (diff > 0) ? 1 : -1;
+		int j, size, y, x, nx, ny, cnt = 0,before;
+		queue<int> xs, ys,b;
+		xs.push(ex), ys.push(ey),b.push(-1);
+		while (!xs.empty())
+		{
+			cnt++;
+			size = (int)xs.size();
+			if (size == 2)
+			{
+				cout << "XHAE" << endl;
+				return;
+			}
+			y = ys.front(), x = xs.front(), ys.pop(), xs.pop(), before = b.front(),b.pop();
+			for (j = 0; j < 4; ++j)
+			{
+				ny = y + move[j][0], nx = x + move[j][1];
+				if (ny > n || ny <1 || nx>m || nx < 1)continue;
+				if (map[ny][nx] != '#' && visited[ny][nx] == 0)
+				{
+					while (map[ny][nx] != '#')
+					{
+						if (ny > n || ny <1 || nx>m || nx < 1)break;
+						visited[ny][nx] = cnt, ny += move[j][0], nx += move[j][1];
+					}
+					ys.push(ny - move[j][0]);
+					xs.push(nx - move[j][1]);
+					b.push(j);
+					check[j] = true;
+				}
+			}
+		}
+		if (cnt < 12)
+		{
+			for (int i = 0; i < 4; ++i)
+				if (check[i])cout<<out[i];
+			cout << endl;
+		}
+		else cout << "XHAE" << endl;
 	}
+public:
+	void run()
+	{
+		int t,i,j;
+		cin >> t;
+		while (t--)
+		{
+			cin >> n >> m;
+			memset(visited, 0, sizeof(visited));
+			for (i = 1; i <= n; ++i)for ( j = 1; j <= m; ++j)
+			{
+				cin >> map[i][j];
+				if (map[i][j] == 'O')ey = i, ex = j;
+			}
+			solve();
+		}
+	}
+};
+class boj_1002
+{
+public:
+	void run()
+	{
+		int x1, x2, y1, y2, r1, r2,t,dis,p,m;
+		cin >> t;
+		while (t--)
+		{
+			cin >> x1 >> y1 >> r1 >> x2 >> y2 >> r2;
+			dis = (x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1);
+
+			p = (r2 + r1)*(r2 + r1);
+			m = (r2 - r1)*(r2 - r1);	
+			if (dis == 0 && r1 == r2)cout << "-1" << endl;
+			else if (p < dis || m > dis)cout << "0" << endl;
+			else if (m == dis || p == dis)cout << "1" << endl;		
+			else cout << "2" << endl;
+		}
+	}
+};
+class money_2512
+{
+private:
+	int n,total;
+	int arr[10001];
+public:
+	void run()
+	{
+		int i, mid, l, r, sum=0, ret = 0,large=0;
+		cin >> n;
+		for (i = 0; i < n; ++i)
+		{
+			cin >> arr[i],sum+=arr[i];
+			if (large < arr[i])large = arr[i];
+		}
+		cin >> total;
+		if (sum <= total)cout<< large <<endl;
+		else
+		{
+			l = 1, r = arr[n-1];
+			while (l<=r)// 중심값이 안움직이면 종료
+			{
+				mid = (l + r) / 2 , sum = 0;				
+				for (i = 0; i < n; ++i)
+					if (arr[i] <= mid)sum += arr[i];
+					else sum += mid;
+				if (sum > total) r = mid - 1;
+				else {
+					if (ret < mid) ret = mid;
+					l = mid + 1;					
+				}
+					
+			}
+			cout << ret << endl;
+		}
+	}
+};
+/*
+class driveTour_2394
+{
+private:
+	int max = 9999;
+	bool map[257][257] = { { false, }, };
+	int mem[257][257] = { { 0, }, };
+	int n,ret=9999;	
+public:
+	void run()
+	{
+		int x, y, i, j;
+		cin >> n;
+		for (i = 1; i <= n; ++i)for (j = 1; j <= n; ++j) {
+			mem[i][j] = max;
+			map[i][j] = max;
+		}
+		while (true)
+		{
+			cin >> x >> y;
+			if (x == 0 && y == 0) break;
+			map[x][y] = map[y][x] = true;
+		}
+		if (map[1][2])mem[1][2] = 1;
+		for (i = 3; i <= n; ++i)
+		{
+			for (j = 1; j < i - 1 && map[i - 1][i]; ++j)
+			{
+				mem[j][i] = 
+			}
+			for (j = 1; j < i - 1; ++j)
+			{
+
+			}
+		}		
+	}
+};
+*/
+class moonTour_10272 {
+private:
+	double mem[256][256];//double mem[512][512];
 	class point {
 	public:
-		double y, x;
-		double l, r;
-		static bool before(const point& p1, const point& p2) {
-			if (CompareD(p1.x, p2.x) == 0)
-				if (CompareD(p1.y, p2.y) == 1) return false;
-				else return true;
-			if (CompareD(p1.x, p2.x) == 1) return false;
-			else return true;
-		}
+		double x, y;
 	};
-	double calc_distance(point& p1, point& p2) {return sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y));}
-	vector<point> arr;	
-	vector<double> mem;
+	int n;
+	point arr[520];
+	
+	double distance(int a, int b) 
+	{
+		return sqrt((arr[a].x - arr[b].x)*(arr[a].x - arr[b].x) + (arr[a].y - arr[b].y)*(arr[a].y - arr[b].y));
+	}
+	void solve() 
+	{
+		mem[1][2] = distance(1,2);
+		for (int i = 3; i <= n; ++i) 
+		{
+			for (int j = 1; j < i - 1; ++j) 
+				mem[j][i] = mem[j][i - 1] + distance(i - 1, i);
+			mem[i - 1][i] = mem[1][i - 1] + distance(1, i);
+			for (int j = 1; j < i - 1; ++j) 
+				mem[i - 1][i] = min(mem[i - 1][i], mem[j][i-1]+distance(j,i));
+		}
+		cout << mem[n - 1][n] + distance(n - 1, n) << endl;
+	}
 public:
 	void run() {
-		double y,x,ret;
-		int t, n,s,e;
+		int t;
+		double x, y;
 		cin >> t;
-		while (t--) {
+		while (t--)
+		{
 			cin >> n;
-			mem.clear(), mem.resize(n), ret = 0, arr.clear();
-			for (int i = 0; i < n; ++i) {
+			for (int i = 1; i <= n;++i)
+			{
 				cin >> x >> y;
-				arr.push_back({ y,x });
+				arr[i] = { x,y };
 			}
-			sort(arr.begin(), arr.end(), point::before);
-			for (int i = 1; i < n; ++i) {
-				if (CompareD(arr[i].x, arr[i - 1].x) == 0) {
-					for (s = i - 1, e = i; CompareD(arr[e].x, arr[e - 1].x) == 0 && e < n; ++e);
-					for (int j = s; j < e && s != 0; ++j) arr[j].l = calc_distance(arr[s - 1], arr[j]);
-					for (int j = s; j < e && e != n; ++j) arr[j].r = calc_distance(arr[e], arr[j]);
-					double minR = 90000000;
-					for (int j = s; j < e; ++j) 
-						minR = min(minR, abs((arr[j].y - arr[s].y) * 2) + abs((arr[j].y - arr[e - 1].y) * 2) + arr[j].l + arr[j].r);
-					ret += minR;
-				}
-				else ret += calc_distance(arr[i], arr[i - 1]);
-			}
-			cout << ret*2 << endl;
+			solve();
 		}
 	}
 };
@@ -81,7 +232,7 @@ public:
 		while (size--)
 		{
 			cin >> tmp;
-			if (sub1.length() + sub2.length() >= tmp.length())
+			if (sub1.length() + sub2.length() > tmp.length())
 			{
 				cout << "NE" << endl;
 				continue;
@@ -752,10 +903,9 @@ public:
 		
 	}
 };
-/*
-int mem[16][1 << 16] = { 0, };
 class tsp2 {
 private:
+	int mem[16][1 << 8] = { 0, };//int mem[16][1 << 16] = { 0, };
 	int max = 20000000;
 	int maps[16][16] = { { 0, }, };
 	int masks[16] = { 0, };
@@ -794,7 +944,6 @@ public:
 		cout << ret << endl;
 	}
 };
-*/
 class coin2 {
 private:
 	static const int max = 200000;
@@ -1103,66 +1252,73 @@ public:
 };
 class teach {
 private:
-	int* arrCnt;
-	bool** arr;
-	bool origin[26];
-	int max = 0, cur = 0, wordCnt, alpaCnt;
-	vector<int> idxs;
-	vector<int> temp;
-	vector<vector<int>> idxs2;
-	void make_combination(int idx,int depth) {
-		if (max == wordCnt)return;
-		if (depth == 0) {
-			int cnt = 0;
-			cur = 0;
-			for (int i = 0; i < wordCnt; ++i) {
-				if (alpaCnt < arrCnt[i])continue;
-				cnt = 0;
-				for (int j = 0; j < temp.size(); ++j)
-					if (arr[i][temp[j]])cnt++;
+	int init;
+	int ind[26] = { 0, };
+	vector<int> mask;
 
-				if (cnt == arrCnt[i])cur++;
-			}
-			if (max < cur)max = cur;
-			return;
+	int bc(int x) {
+		int ret = 0;
+		while (x > 0) {
+			++ret;
+			x &= x - 1;
 		}
-		for (int i = idx; i < idxs.size(); ++i) {
-			temp.push_back(idxs[i]);
-			make_combination(i + 1, depth - 1);
-			temp.pop_back();
-		}
+		return ret;
 	}
 public:
-	bool run() {
-		char buf[16], temp;
-		int cnt = 0, idx = 0;
-		cin >> wordCnt >> alpaCnt;
-		if (wordCnt > 50 || wordCnt < 0)return false;
-		if (alpaCnt > 26)return false;
-		if ((alpaCnt -= 5) < 0)return false;
-		arr = new bool*[wordCnt];
-		arrCnt = new int[wordCnt];
-		for (int i = 0; i < wordCnt; ++i, idx = 0) {
-			arr[i] = new bool[26];
-			arrCnt[i] = 0;
-			for (int k = 0; k < 26; ++k)arr[i][k] = false;
-			cin >> buf;
-			while (buf[idx] != NULL) {
-				temp = buf[idx++];
-				if (temp != 'a' && temp != 'n' && temp != 'c' && temp != 't' && temp != 'i') {
-					if (!arr[i][temp - 97])arrCnt[i]++;
-					if (!origin[temp - 97])idxs.push_back(temp - 97);
-					origin[temp - 97] = arr[i][temp - 97] = true;
-				}
-			}
-			if (idx < 8 || idx >15)return false;
+	int count(vector <string> words, int K) {
+		if (K < 5) {
+			return 0;
 		}
-		int in;
-		if (idxs.size() > alpaCnt)in = alpaCnt;
-		else in = (int)idxs.size();
-		make_combination(0,in);
-		
-		cout << max<<endl;
-		return true;
+		int n = (int)words.size();
+		init = 0;
+		const string str = "acint";
+		int t = 25;
+		for (int i = 0; i<(int)str.size(); ++i) {
+			ind[str[i] - 'a'] = t--;
+			init |= 1 << ind[str[i] - 'a'];
+		}
+		for (int i = 0; i<26; ++i) {
+			if (ind[i] == 0) {
+				ind[i] = t--;
+			}
+		}
+		mask.assign(n, 0);
+		for (int i = 0; i<n; ++i) {
+			for (int j = 0; j<(int)words[i].size(); ++j) {
+				mask[i] |= (1 << ind[words[i][j] - 'a']);
+			}
+		}
+
+		K -= 5;
+		int sol = 0;
+		for (int m = 0; m<(1 << 21); ++m) {
+			int t = bc(m);
+			if (t != K) {
+				continue;
+			}
+			int mm = m | init;
+			int cnt = 0;
+			for (int i = 0; i<n; ++i) {
+				cnt += ((mask[i] & mm) == mask[i]);
+			}
+
+			sol = max(sol, cnt);
+		}
+		return sol;
+	}
+	void run() {
+		vector<string> t;
+		string s;
+		char buf[16];
+		int wordCnt, alpaCnt, cnt = 0, idx = 0;
+		cin >> wordCnt >> alpaCnt;
+		if (wordCnt > 50 || wordCnt < 0)return;
+		if (alpaCnt > 26)return;
+		for (int i = 0; i < wordCnt; ++i) {
+			cin >> buf;
+			s = buf;
+			t.push_back(s);
+		}
+		cout << count(t, alpaCnt) << endl;
 	}
 };
