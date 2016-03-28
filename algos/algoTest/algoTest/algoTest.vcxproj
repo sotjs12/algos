@@ -153,6 +153,7 @@
     <ClInclude Include="backjoon.h" />
     <ClInclude Include="dataStructures.h" />
     <ClInclude Include="doublets.h" />
+    <ClInclude Include="dp.h" />
     <ClInclude Include="eatMan.h" />
     <ClInclude Include="island.h" />
     <ClInclude Include="knightsTour.h" />

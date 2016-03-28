@@ -4,61 +4,291 @@
 #include <queue>
 #include <vector>
 #include <set>
+#include <cstring>
 #include <algorithm>
 #include <iostream>
 using namespace std;
 
-
-class BOJ_10218
+class BOJ_2644
 {
 private:
-	int n, m,ex,ey;
-	int move[4][2] = { {0,-1},{ 0,1 },{ -1,0 },{ 1,0 } };
-	bool check[4] = { false, };
-	char out[4] = { 'L','R','U','D' };
-	char map[11][11];
-	int visited[11][11];
+	vector<int> adjV[101];
+	int mem[101] = { 0, };
+	int n, m;
+	int find(int idx,int b)
+	{
+		queue<int> q;
+		int cnt = 0,size;
+		q.push(idx), mem[idx] = 1;
+		while (!q.empty())
+		{
+			size = (int)q.size();
+			while (size--)
+			{
+				idx = q.front(),q.pop();
+				for (int i = 0; i < adjV[idx].size(); ++i)
+					if (mem[adjV[idx][i]] != 1)
+						if (adjV[idx][i] == b)return cnt + 1;
+						else q.push(adjV[idx][i]), mem[adjV[idx][i]] = 1;
+			}
+			cnt++;
+		}
+		return -1;
+	}
+public:
+	void run()
+	{
+		int a, b;
+		cin >> n >> a >> b >> m;
+		for (int i = 0,t1,t2; i < m; ++i)
+			cin >> t1 >> t2, adjV[t1].push_back(t2), adjV[t2].push_back(t1);
+		cout << find(a,b) << endl;
+	}
+};
+class BOJ_2636
+{
+private:
+	int cheese[102][102] = { {0,}, };
+	int move[4][2] = { {0,1},{0,-1},{1,0},{-1,0}};//왼,오른,위,아래,왼위,왼아래,오위,오아래
+	int n, m;
+	queue<int> x, y;
+	void init(int _y,int _x)
+	{
+		if (cheese[_y][_x] == -1) return;
+		else if (cheese[_y][_x] == 1) x.push(_x), y.push(_y), cheese[_y][_x]++;
+		else if (cheese[_y][_x] == 0)
+		{
+			cheese[_y][_x] = -1;
+			for (int i = 0, ny = 0, nx = 0; i < 4; ++i)
+			{
+				ny = _y + move[i][0], nx = _x + move[i][1];
+				if (ny < 0 || ny > n || nx < 0 || nx > m)continue;
+				init(ny, nx);
+			}
+		}		
+	}
 	void solve()
 	{
-		int j, size, y, x, nx, ny, cnt = 0,before;
-		queue<int> xs, ys,b;
-		xs.push(ex), ys.push(ey),b.push(-1);
-		while (!xs.empty())
+		int nx, ny,size,i,j,curX,curY,cnt=0;
+		while (!x.empty())
 		{
-			cnt++;
-			size = (int)xs.size();
-			if (size == 2)
+			size = (int)x.size(), cnt++;
+			for (i = 0; i < size; ++i)
 			{
-				cout << "XHAE" << endl;
-				return;
-			}
-			y = ys.front(), x = xs.front(), ys.pop(), xs.pop(), before = b.front(),b.pop();
-			for (j = 0; j < 4; ++j)
-			{
-				ny = y + move[j][0], nx = x + move[j][1];
-				if (ny > n || ny <1 || nx>m || nx < 1)continue;
-				if (map[ny][nx] != '#' && visited[ny][nx] == 0)
+				curX = x.front(), curY = y.front(), x.pop(), y.pop();
+				for (j = 0; j < 4; ++j)
 				{
-					while (map[ny][nx] != '#')
-					{
-						if (ny > n || ny <1 || nx>m || nx < 1)break;
-						visited[ny][nx] = cnt, ny += move[j][0], nx += move[j][1];
-					}
-					ys.push(ny - move[j][0]);
-					xs.push(nx - move[j][1]);
-					b.push(j);
-					check[j] = true;
+					ny = curY + move[j][0], nx = curX + move[j][1];
+					if (ny < 0 || ny > n || nx < 0 || nx > m)continue;
+					if (cheese[ny][nx] == 1)x.push(nx), y.push(ny), cheese[ny][nx]++;
+					else if (cheese[ny][nx] == 0)init(ny, nx);
 				}
 			}
 		}
-		if (cnt < 12)
-		{
-			for (int i = 0; i < 4; ++i)
-				if (check[i])cout<<out[i];
-			cout << endl;
-		}
-		else cout << "XHAE" << endl;
+		cout << cnt << endl;
+		cout << size << endl;
 	}
+public:
+	void run()
+	{
+		cin >> n >> m;
+		for (int i = 1; i <= n; ++i)for (int j = 1; j <= m; ++j)cin >> cheese[i][j];
+		init(0, 0);
+		solve();
+	}
+};
+class BOJ_1260
+{
+private:
+	vector<int> arr[1001];
+	bool mem[1001] = { false, };
+	int n, m, start;
+	void print_dfs(int idx)
+	{
+		cout << idx << " "; mem[idx] = true;
+		for (int i = 0; i < arr[idx].size(); ++i)
+			if (!mem[arr[idx][i]]) print_dfs(arr[idx][i]);
+	}
+	void print_bfs()
+	{
+		queue<int> q;
+		int v;
+		q.push(start);
+		while (!q.empty())
+		{
+			v = q.front(), q.pop();
+			cout << v << " ";
+			for (int i = 0; i < arr[v].size(); ++i)
+				if (!mem[arr[v][i]])q.push(arr[v][i]), mem[arr[v][i]] = true;
+		}
+	}
+public:
+	void run()
+	{
+		cin >> n >> m >> start;
+		for (int i = 0, t1 = 0, t2 = 0; i < m; ++i)
+			cin >> t1 >> t2, arr[t1].push_back(t2),arr[t2].push_back(t1);
+		for (int i = 0; i <= n; ++i)sort(arr[i].begin(), arr[i].end());
+		print_dfs(start); cout << endl;
+		for (int i = 0; i < 1001; ++i)mem[i] = false;
+		print_bfs(); cout << endl;
+	}
+};
+class BOJ_11947
+{
+private:
+public:
+	void run()
+	{
+		unsigned long long mask[11] = { 1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000,10000000000 };
+		unsigned long long ret, maxN;
+		int t,i;
+		cin >> t;
+		while (t--)
+		{
+			cin >> ret;
+			for (i = 0; i < 10; ++i)if (mask[i] <= ret && ret < mask[i + 1])break;
+			maxN = (mask[i + 1] - 1) / 2;
+			if (ret > maxN)ret = maxN;
+			ret = ret*(mask[i + 1] - ret - 1);
+			cout << ret << endl;
+		}
+	}
+};
+class BOJ_1480
+{
+private:
+	int n, m, c;
+	int arr[13];
+	int mem[13][21][1 << 3];//int mem[13][21][1 << 13];
+	int solve(int p,int w,int s)	//p번째 가방의 현재 무게가 w이고,보석의 상태가 s일때 가져갈수있는 보석수
+	{
+		if (p == m)return 0;
+		int& ret = mem[p][w][s];
+		if (ret != -1)return ret;
+		ret = solve(p + 1, c, s);
+		for (int j = 0; j < n; ++j)
+		{
+			int pick = 1 << j;
+			if ((s & (pick)) != 0)continue;
+			if (w < arr[j])continue;
+			ret = max(ret, solve(p ,w - arr[j], s | pick) + 1);
+		}
+		return ret;
+	}
+public:
+	void run()
+	{
+		memset(mem, -1, sizeof(mem));
+		cin >> n >> m >> c;
+		for (int i = 0; i < n; ++i)cin >> arr[i];
+		cout << solve(0,c,0) << endl;
+	}
+};
+/*
+입력
+1
+5 5
+#####
+#...O
+#.#.#
+#...#
+#####
+입력 파일의 첫 번째 줄에 테스트 케이스의 수를 의미하는 자연수 T가 주어진다. 그 다음에는 T개의 테스트 케이스가 주어진다.
+테스트 케이스의 첫 번째 줄에는 보드의 세로/가로 크기를 의미하는 두 정수 N, M (3 ≤ N, M ≤ 10)이 주어진다. 다음 N개의 줄에 보드의 모양과 출구의 위치를 나타내는 길이 M의 문자열이 주어진다. 이 문자열은 '.', '#', 그리고 'O'만으로 이루어져 있다. '.'은 빈 칸을 의미하고, '#'은 공이 이동할 수 없는 장애물 또는 벽을 의미하며, 'O'는 가장자리에 뚫린 출구의 위치를 의미한다.
+입력되는 모든 보드의 가장자리에는 출구를 제외하고 모두 '#'이 있음이 보장된다. 빈 칸의 개수는 한 개 이상이다. 모든 빈 칸에서는 출구로 이어진 길이 있다는 것이 보장되어 있다. 이어진 길이라는 것은 공통된 변을 가진 빈 칸으로 이동할 수 있다는 것을 의미한다.
+출력
+각 테스트 케이스마다 한 줄을 출력한다. 빈 칸 어디에 공이 있든, 10회 이내에 항상 공을 빼낼 수 있는 방법이 존재한다면, 'L','R','U','D'로 이뤄진 문자열을 하나 출력한다. 각각 왼쪽으로 기울이기, 오른쪽으로 기울이기, 위쪽으로 기울이기, 아래쪽으로 기울이기를 의미한다. 만약 10회 이내에 공을 뺄 수 있는 방법이 존재하지 않는다면 'XHAE'을 출력한다.
+LUR
+XHAE
+
+복잡함... 다른사람소스들도 복잡함 읽기를 포기함.
+완전탐색을 사용했는데 10x10 판이라서 가능했지 안그랬으면 백프로 터졌을 코드임
+다행이 R의 경우에는 다음경로가 U,D 뿐이기때문에 2의 지수로 재귀함수가 증가함 그리고 거의 대부분의 경우는 1가지 경우로만 움직임 양쪽으로 분기되는 양이적다는소리임
+재귀함수는 L -> R -> U -> D ...등등 모든 경로를 만들기위해 사용했고 
+전역변수를 사용해서 해당경로값 상태를 저장하고 답을찾음. 답이없으면 해당 path 를 Pop 시키고 다른경로 탐색
+문제는 t1,t2 라는 이전경로를 저장하는 백터인데 이녀석이 오버플로우를 일으킬수있음.. 근데 운좋게 통과함
+
+요약: 모든경로를 만든다 , 한경로가 추가될때마다 그 경로를 통해 0 위치로 돌아오는지 검사하고 모두 0위치라면 sucks 를 true로 바꾸고 남은재귀함수 사용금지시킴
+
+*/
+class BOJ_10218
+{
+private:
+	int n, m,size;
+	vector<int> pointX,pointY;
+	vector<int> path;
+	int move[4][2] = { {0,1},{ 1,0 },{ 0,-1 },{ -1,0 } };
+	char out[4] = { 'R','D','L','U' };
+	char map[11][11];
+	bool suck[101] = { false, };
+	bool sucks = false;
+	int check_path(int n1)
+	{
+		int suckCnt = 0, ny, nx;
+		for (int i = 0; i < size; ++i)
+		{
+			if (suck[i])continue;
+			ny = pointY[i] + move[n1][0],nx = pointX[i] + move[n1][1];
+			if (ny > n || ny <1 || nx>m || nx < 1)continue;
+			while (map[ny][nx] != '#' && map[ny][nx] != 'O')
+			{
+				ny += move[n1][0], nx += move[n1][1];
+				if (ny > n || ny <1 || nx>m || nx < 1)
+				{
+					ny -= move[n1][0], nx -= move[n1][1];
+					break;
+				}
+			}
+			pointY[i] = ny - move[n1][0], pointX[i] = nx - move[n1][1];
+			if (map[ny][nx] == 'O')suck[i] = true, suckCnt++;			
+		}
+		return suckCnt;
+	}
+	void solve(int idx,int cnt)
+	{
+		if (sucks)return;
+		if (cnt == 0)return;
+		int n1, n2;
+		vector<int> t1, t2;
+
+		if (cnt == 10)n1 = n2 = idx;
+		else n1 = idx - 1, n2 = idx + 1;
+		if (n1 < 0)n1 = 3;
+		if (n2 > 3)n2 = 0;
+
+		path.push_back(n1);	
+		t1.assign(pointX.begin(),pointX.end());
+		t2.assign(pointY.begin(),pointY.end());
+		if (check_path(n1) == size)
+		{
+			sucks = true; 
+			for (int i = 0; i < path.size(); ++i)cout << out[path[i]];
+			cout << endl;
+			return;
+		}
+		solve(n1, cnt - 1);
+		pointX.assign(t1.begin(), t1.end());pointY.assign(t2.begin(), t2.end());
+		for (int i = 0; i < size; ++i)suck[i] = false;
+		path.pop_back();
+
+		if (cnt == 10 || sucks)return;
+		path.push_back(n2);
+		t1.assign(pointX.begin(), pointX.end());
+		t2.assign(pointY.begin(), pointY.end());
+		if (check_path(n2) == size)
+		{
+			sucks = true;
+			for (int i = 0; i < path.size(); ++i)cout << out[path[i]];
+			cout << endl;
+			return;
+		}
+		solve(n2, cnt - 1);
+		pointX.assign(t1.begin(), t1.end());pointY.assign(t2.begin(), t2.end());
+		for (int i = 0; i < size; ++i)suck[i] = false;
+		path.pop_back();
+	}
+	
 public:
 	void run()
 	{
@@ -67,13 +297,16 @@ public:
 		while (t--)
 		{
 			cin >> n >> m;
-			memset(visited, 0, sizeof(visited));
 			for (i = 1; i <= n; ++i)for ( j = 1; j <= m; ++j)
 			{
 				cin >> map[i][j];
-				if (map[i][j] == 'O')ey = i, ex = j;
+				if (map[i][j] == '.')pointX.push_back(j), pointY.push_back(i);
 			}
-			solve();
+			size = (int)pointX.size();
+			for (int i = 0; i < 4 && !sucks;++i) solve(i, 10);
+			if(!sucks) cout << "XHAE" << endl;
+			sucks = false;
+			pointX.clear(), pointY.clear(), path.clear();
 		}
 	}
 };
@@ -82,19 +315,16 @@ class boj_1002
 public:
 	void run()
 	{
-		int x1, x2, y1, y2, r1, r2,t,dis,p,m;
+		int x1, x2, y1, y2, r1, r2,t,dis,p,m,ret;
 		cin >> t;
 		while (t--)
 		{
 			cin >> x1 >> y1 >> r1 >> x2 >> y2 >> r2;
 			dis = (x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1);
-
 			p = (r2 + r1)*(r2 + r1);
-			m = (r2 - r1)*(r2 - r1);	
-			if (dis == 0 && r1 == r2)cout << "-1" << endl;
-			else if (p < dis || m > dis)cout << "0" << endl;
-			else if (m == dis || p == dis)cout << "1" << endl;		
-			else cout << "2" << endl;
+			m = (r2 - r1)*(r2 - r1);
+			dis == 0 && r1 == r2 ? ret = -1 : (p < dis || m > dis ? ret = 0 : (m == dis || p == dis ? ret = 1 : ret = 2));
+			cout << ret << endl;
 		}
 	}
 };
@@ -965,6 +1195,46 @@ public:
 				mem[j] = min(mem[j], mem[j - coins[i]] + 1);
 		if(mem[target] != max)	cout << mem[target] << endl;
 		else cout << "-1" << endl;		
+	}
+};
+class coin3 {
+private:
+	static const int max = 200000;
+	int coins[101] = { 0, };
+	int mem[10001] = { 0, };
+	int pos[10001] = { 0, };
+	int size;
+	int target;
+public:
+	void run() {
+		cin >> size >> target;
+		mem[0] = 0;
+		for (int i = 1; i <= target; ++i)mem[i] = max;
+		for (int i = 0; i < size; ++i) {
+			cin >> coins[i];
+			if (coins[i] <= target) mem[coins[i]] = 1;
+		}
+		for (int i = 0; i < size; ++i)
+			for (int j = coins[i]; j <= target; ++j)
+			{
+				if (mem[j] > mem[j - coins[i]] + 1)
+				{
+					mem[j] = mem[j - coins[i]] + 1;
+					pos[j] = j - coins[i];
+				}
+
+			}
+		if (mem[target] != max)
+		{
+			cout << mem[target] << endl;
+			int idx = target;
+			while (idx != 0)
+			{
+				cout << idx - pos[idx] << " ";
+				idx = pos[idx];
+			}
+		}
+		else cout << "-1" << endl;
 	}
 };
 class Edge {

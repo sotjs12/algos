@@ -1,4 +1,4 @@
-#include "WERTYU.h"
+﻿#include "WERTYU.h"
 #include "doublets.h"
 #include "eatMan.h"
 #include "permutation.h"
@@ -11,10 +11,11 @@
 #include "backjoon.h"
 #include "waterBottle.h"
 #include "algospot.h"
+#include "dp.h"
 
 int main()
 {
-	NUMB3RS p;
+	BOJ_2579 p;
 	p.run();
 	return 0;
 }
