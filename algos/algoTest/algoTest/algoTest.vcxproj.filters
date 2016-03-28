@@ -56,5 +56,11 @@
     <ClInclude Include="waterBottle.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="algospot.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="dp.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

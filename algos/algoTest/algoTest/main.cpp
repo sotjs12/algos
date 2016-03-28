@@ -1,4 +1,4 @@
-#include "WERTYU.h"
+﻿#include "WERTYU.h"
 #include "doublets.h"
 #include "eatMan.h"
 #include "permutation.h"
@@ -10,9 +10,12 @@
 #include "dataStructures.h"
 #include "backjoon.h"
 #include "waterBottle.h"
+#include "algospot.h"
+#include "dp.h"
 
-int main() {
-	charMatch_9996 k;
-	k.run();
+int main()
+{
+	BOJ_2579 p;
+	p.run();
 	return 0;
 }
