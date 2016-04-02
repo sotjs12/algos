@@ -9,19 +9,190 @@
 #include <iostream>
 using namespace std;
 
+int dp[87654322];
+class BOJ_1521
+{
+private:
+	int arr[8];
+	int mask[8] = { 1,10,100,1000,10000,100000,1000000,10000000 };
+	int n,dest=0,cnt=0;
+
+	void solve(int num)
+	{
+		if (num == dest)return;
+		for (int i = 0; i < n; ++i)
+		{
+			
+		}
+	}
+public:
+	void run()
+	{
+		memset(dp, -1, sizeof(dp));
+		cin >> n;
+		int start = 0;
+		for (int i = 0; i < n; ++i)cin >> arr[i], start += mask[n - i - 1] * arr[i];
+		sort(arr, arr + n);
+		for (int i = 0; i < n; ++i)dest += mask[n - i - 1] * arr[i];
+		solve(start);
+	}
+};
+class BOJ_1463
+{
+private:
+	int n,ret=99999999;
+	void solve(int n,int cnt)
+	{
+		if (n == 1) ret = min(ret, cnt);
+		else
+		{
+			(n % 3) != 0 ? solve(n - 1, cnt + 1) : solve(n / 3, cnt + 1);
+			if((n % 2) == 0) solve(n / 2, cnt + 1);
+		}
+	}
+public:
+	void run()
+	{
+		cin >> n;
+		solve(n, 0);
+		cout << ret << endl;
+	}
+};
+class BOJ_1562
+{
+private:
+	long long dp[1][1][1 << 1];// dp[i][n][ㄴ] = 현재 n번째수가 i 이고 사용한 숫자들의 상태가 s일때 모든 계단수의 개수
+//	long long dp[10][101][1 << 11];
+	long long mod = 1000000000;
+	int n,state = (1 << 10) - 1;
+	long long solve(int idx, int len,int s)
+	{
+		if (idx > 9 || idx < 0)return 0;
+		if (len == 1)return state == s;
+		long long& ret = dp[idx][len][s];
+		if (ret != -1)return ret;
+		ret = solve(idx - 1, len - 1, s | (1 << (idx - 1))) + solve(idx + 1, len - 1, s | (1 << (idx + 1)));
+		return ret% mod;
+	}
+public:
+	void run()
+	{
+		memset(dp, -1, sizeof(dp));
+		cin >> n;
+		long long ret = 0;
+		for (int i = 1; i < 10; ++i)ret += solve(i, n, 1 << i), ret %= mod;
+		cout << ret << endl;
+
+	}
+};
+/*
+이녀석은 변형인데 DP 를 어떻게 정의했는지 잘 이해하고 있어야 풀수있다.
+DP 의 dp[i][n] 은 만약 i 가 3이고 n 이 3이라면  333 ~ 999 까지의 경우의수이다
+그래서  000~999 - 333-999 를 하면 000~299 까지의 답을 알아낼수있다.
+이런식으로 코드를 작성하면 풀이완성
+*/
+class BOJ_10573
+{
+private:
+	string s;
+	long long dp[10][82];	// dp[i][n] = 현재 n자리수가 i일때  증가하는 수의 개수
+	long long  solve(int idx,int n)
+	{
+		if (n == 0)return 1;
+		long long & ret = dp[idx][n];
+		if (ret != -1)return ret;
+		ret = 0;
+		for (int i = 0; i <= idx; ++i)
+			ret += solve(i, n - 1);
+		return ret;
+	}
+public:
+	void run()
+	{
+		memset(dp, -1, sizeof(dp));
+		int t,n;
+		solve(9, 81);
+		cin >> t;
+		while (t--)
+		{
+			cin >> s, n = (int)s.size();
+			long long ret = dp[9][n ] - dp['9' - s[0]][n];
+			for (int i = 1; i < n; ++i)
+			{				
+				if (s[i - 1] > s[i])
+				{
+					ret = -1;
+					break;
+				}
+				ret += dp[9][n - i] - dp['9' - s[i] ][n - i] - (dp[9][n - i] - dp['9' - s[i-1]][n - i]);
+			}
+			cout << ret<< endl;
+		}
+	}
+};
+class BOJ_11057
+{
+private:
+	int mod = 10007;
+	int dp[10][1001];	// dp[i][n] = 현재 n자리수가 i일때  줄어들지않는 수의 개수
+	int solve(int idx, int n)
+	{
+		if (n == 0)return 1;
+		int& ret = dp[idx][n];
+		if (ret != -1)return ret;
+		ret = 0;
+		for (int i = 0; i <= idx; ++i)
+			ret += solve(i, n - 1)%mod;
+		return ret;
+	}
+public:
+	void run()
+	{
+		memset(dp, -1, sizeof(dp));
+		int n;
+		cin >> n;
+		cout << solve(9, n)%mod << endl;
+	}
+};
+class BOJ_2688
+{
+private:
+	unsigned long long dp[10][65];	// dp[i][n] = 현재 n자리수가 i일때  줄어들지않는 수의 개수
+	unsigned long long solve(int idx,int n)
+	{
+		if (n == 0)return 1;
+		unsigned long long& ret = dp[idx][n];
+		if (ret != -1)return ret;
+		ret = 0;
+		for (int i = 0; i <= idx; ++i)
+			ret += solve(i, n - 1);
+		return ret;
+	}
+public:
+	void run()
+	{
+		memset(dp, -1, sizeof(dp));
+		int t,n;
+		cin >> t;
+		while (t--)		
+			cin >> n,cout<<solve(9,n)<<endl;
+	}
+};
 class BOJ_1633
 {
 private:
+	int dp[100][16][16];	// dp[i][a][b]  =  i번째 사람 이전까지 선택하거나 안했을때 백팀이 a 명남고 흑팀이 b명남았을때 얻을수있는 최고점
+	//int dp[1001][16][16];	// dp[i][a][b]  =  i번째 사람 이전까지 선택하거나 안했을때 백팀이 a 명남고 흑팀이 b명남았을때 얻을수있는 최고점
 	int n = 0;
 	int arr[1001][2];
-	int dp[1001][3];	//dp[a][0] = a번선수를 안골랐을때 최대점수 , dp[a][1] 백팀일때 최대
-	int solve(int idx,int wb,int wcnt,int bcnt)
+	int solve(int idx,int wcnt,int bcnt)
 	{
-		if (wcnt + bcnt == 0 || bcnt < 0 || wcnt < 0)return 0;
-		int& ret = dp[idx][wb];
+		if ((wcnt == 0 && bcnt == 0) || idx >=n)return 0;
+		int& ret = dp[idx][wcnt][bcnt];
 		if (ret != -1)return ret;
-	//	ret = max(solve(idx+1,0,wcnt,bcnt))
-
+		ret = solve(idx + 1, wcnt, bcnt);
+		if (wcnt - 1 >= 0)	ret = max(ret,solve(idx + 1, wcnt - 1, bcnt) + arr[idx][0]);
+		if (bcnt - 1 >= 0)	ret = max(ret,solve(idx + 1, wcnt, bcnt-1) + arr[idx][1]);
 		return ret;
 	}
 public:
@@ -29,7 +200,7 @@ public:
 	{
 		memset(dp, -1, sizeof(dp));
 		while (scanf_s("%d%d", &arr[n][0], &arr[n][1]) > 0)++n;
-		cout << solve(0,0,15,15) << endl; 
+		cout << solve(0,15,15) << endl; 
 	}
 };
 /*
