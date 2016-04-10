@@ -15,7 +15,7 @@
 
 int main()
 {
-	BOJ_1521 p;
+	BOJ_1744 p;
 	p.run();
 	return 0;
 }

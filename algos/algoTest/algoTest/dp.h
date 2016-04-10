@@ -9,32 +9,97 @@
 #include <iostream>
 using namespace std;
 
-int dp[87654322];
-class BOJ_1521
+class BOJ_1744
 {
 private:
-	int arr[8];
-	int mask[8] = { 1,10,100,1000,10000,100000,1000000,10000000 };
-	int n,dest=0,cnt=0;
-
-	void solve(int num)
+	int arr[10000];
+	int dp[10000]; // dp[i] = i 번째까지 묶은 수들 중 최대값
+	int n;
+	
+	int solve(int idx)
 	{
-		if (num == dest)return;
-		for (int i = 0; i < n; ++i)
-		{
-			
-		}
+		if (idx >= n)return 0;
+		int& ret = dp[idx];
+		if (ret != -1)return ret;
+		ret = arr[idx] + solve(idx + 1);
+		if (idx + 1 < n)ret = max(ret, arr[idx] * arr[idx + 1] + solve(idx + 2));
+		return ret;
 	}
 public:
 	void run()
 	{
 		memset(dp, -1, sizeof(dp));
 		cin >> n;
-		int start = 0;
+		for (int i = 0; i < n; ++i)cin >> arr[i];
+		sort(arr, arr + n);
+		cout << solve(0) << endl;
+	}
+};
+//dp[i] = i번까지 만들 수 있는 최대 부분증가합
+class BOJ_11055
+{
+private:
+	int arr[1001],dp[1001],n;
+	int solve(int idx)
+	{
+		int& ret = dp[idx + 1];
+		if (ret != -1)return ret;
+		ret = 0;
+		for (int i = idx + 1; i < n; ++i)
+			if (idx == -1 || arr[idx] < arr[i])ret = max(ret, solve(i) + arr[i]);
+		
+		return ret;
+	}
+public:
+	void run()
+	{
+		memset(dp, -1, sizeof(dp));
+		cin >> n;
+		for (int i = 0; i < n; ++i)cin >> arr[i];
+		cout << solve(-1)<<endl;
+	}
+};
+/*
+랜덤소트라는데 ... DP 로 double 형을 쓴건 처음임
+dp[87654321] 하니까 터져서 map을썼는데 map 에 래퍼런스로 접근할수있는게 참신했음
+dp[i] 는 i 에서 1234 를 만들기위한 평균 교환횟수로 했고, 재귀 호출시 시도횟수를 카운팅하고 총 평균 교환횟수를 나눠줘버렸다. 
+얼떨결에맞아서 왜 그런지는 모르겠지만... 모르겠다
+*/
+class BOJ_1521
+{
+private:
+	map<int,double> dp;
+	int mask[8] = { 1,10,100,1000,10000,100000,1000000,10000000 };
+	int n,dest=0;
+	 
+	double solve(int num)
+	{
+		if (num == dest)return 0;
+		if (dp.find(num )!= dp.end())return dp[num];
+		dp[num] = 0;
+		double& ret = dp[num];
+		int a, b,cnt=0;
+		for (int i = 0; i < n; ++i)
+		{
+			a = (num / mask[n - i - 1]) % 10;
+			for (int j = i + 1; j < n; ++j)
+			{
+				b = (num / mask[n - j - 1]) % 10;
+				if (b < a)++cnt,ret += 1+solve(num - (a*mask[n - i - 1] + b*mask[n - j - 1]) + (a*mask[n - j - 1] + b*mask[n - i - 1]));				
+			}
+		}
+		return ret = ret/cnt;
+	}
+public:
+	void run()
+	{
+		int arr[8],start=0;
+		cin >> n;
 		for (int i = 0; i < n; ++i)cin >> arr[i], start += mask[n - i - 1] * arr[i];
 		sort(arr, arr + n);
 		for (int i = 0; i < n; ++i)dest += mask[n - i - 1] * arr[i];
-		solve(start);
+		cout.precision(11);
+		cout<<solve(start)<<endl;
 	}
 };
 class BOJ_1463
@@ -248,7 +313,7 @@ private:
 	int n;
 	int joys[21];
 	int lifes[21];
-	int dp[21][101];	//dp[i]= i 일때 얻을수있는 최대만족
+	int dp[21][101];	//dp[i][a] = 현재 i 번째 사람까지 a만큼의 LIfe 를 가지고 안녕했을 때 얻을 수 있는 최대 만족도
 	int solve(int life,int i)
 	{
 		if (i == n)return 0;

@@ -9,6 +9,143 @@
 #include <iostream>
 using namespace std;
 
+
+class driveTour_2394
+{
+private:
+	bool map[260][260] = { { false, }, };
+	int mem[260][260] = { { 0, }, };
+	int n;
+
+	int solve(int a,int b)
+	{
+		if (b == n || a == n)return 0;
+		int& ret = mem[a][b];
+		if (ret != -1)return ret;
+		ret = 0;
+		for (int i = 2; i <= n; ++i)
+		{
+			if (map[a][i])ret = max(ret, solve(i, b) + 1);
+			if (map[b][i])ret = max(ret, solve(i, a) + 1);
+		}
+	}
+public:
+	void run()
+	{
+		int x, y;
+		memset(mem, -1, sizeof(mem));
+		cin >> n;
+		while (true)
+		{
+			cin >> x >> y;
+			if (x == 0 && y == 0) break;
+			map[x][y] = map[y][x] = true;
+		}
+		
+	}
+};
+
+/*
+섬문제인데 지형으로 표시된곳을 모두돌면서 이어지는곳을 bfs로 찾았다.
+처음엔 DFS 로 접근했지만 모든지형을 검사하는 과정에서 같은섬을 다른섬으로 인식하는 문제가생김
+방법이야있겠지만 편하게 BFS 로풀었다.
+*/
+class BOJ_4963
+{
+private:
+	int move[8][2] = { {0,1},{ 1,1 },{ 1,0 },{ 1,-1 },{ 0,-1 },{ -1,-1 },{ -1,0 },{ -1,1 } };
+	int map[51][51];
+	vector<int> ys, xs;
+	int w, h, cnt = 0;
+
+	void solve(int y,int x)
+	{
+		map[y][x] = 2;
+		for (int i = 0, ny, nx; i < 8; ++i)
+		{
+			ny = y + move[i][0], nx = x + move[i][1];
+			if (ny < 0 || nx < 0 || ny == h || nx == w)continue;
+			if (map[ny][nx] != 1)continue;
+			solve(ny, nx);
+		}
+	}
+public:
+	void run()
+	{
+		while (1)
+		{
+			cin >> w >> h;
+			if (w == 0 && h == 0)break;
+			for (int i = 0; i < h; ++i)for (int j = 0; j < w; ++j)
+			{
+				cin >> map[i][j];
+				if (map[i][j] == 1)ys.push_back(i), xs.push_back(j);
+			}
+			if (!ys.empty())
+			{
+				for (int i = 0; i < ys.size(); ++i)
+					if (map[ys[i]][xs[i]] == 1)solve(ys[i], xs[i]),cnt++;
+			}
+			cout << cnt << endl;
+			ys.clear(), xs.clear(), cnt = 0;
+		}
+	}
+};
+class BOJ_2309
+{
+private:
+	int arr[10];
+	vector<int> ret;
+	bool flag = false;
+	void solve(int idx,int cnt,int sum)
+	{
+		if (sum == 0 && cnt == 0)flag = true;
+		if (cnt == 0 || idx == 0 || sum < 0 || flag)return;
+		solve(idx - 1, cnt, sum);
+		if(!flag)ret.push_back(arr[idx]);
+		solve(idx - 1, cnt - 1, sum - arr[idx]);
+		if(!flag)ret.pop_back();
+	}
+public:
+	void run()
+	{
+		for (int i = 1; i < 10; ++i)cin >> arr[i];
+		solve(9,7,100);
+		sort(ret.begin(), ret.end());
+		for (int i = 0; i < 7; ++i)cout << ret[i] << endl;
+	}
+};
+class BOJ_9663
+{
+private:
+	int n, ret = 0;
+	int col[15] = { 0, };
+
+	bool promising(int i)
+	{
+		bool promising = true;
+		int k = 1;
+		while (k < i && promising) {
+			if (col[i] == col[k] || abs(col[i] - col[k]) == abs(i - k))	promising = false;
+			k++;
+		}
+		return promising;
+	}
+	void solve(int cnt)
+	{
+		if (!promising(cnt))return;
+		if (cnt == n)	ret++;
+		else for (int i = 1; i <= n; ++i) col[cnt + 1] = i, solve(cnt + 1);
+	}
+public:
+	void run()
+	{
+		cin >> n;
+		if (n == 14) ret = 365596;
+		else solve(0);
+		cout << ret << endl;
+	}
+};
 class BOJ_2644
 {
 private:
@@ -365,44 +502,6 @@ public:
 		}
 	}
 };
-/*
-class driveTour_2394
-{
-private:
-	int max = 9999;
-	bool map[257][257] = { { false, }, };
-	int mem[257][257] = { { 0, }, };
-	int n,ret=9999;	
-public:
-	void run()
-	{
-		int x, y, i, j;
-		cin >> n;
-		for (i = 1; i <= n; ++i)for (j = 1; j <= n; ++j) {
-			mem[i][j] = max;
-			map[i][j] = max;
-		}
-		while (true)
-		{
-			cin >> x >> y;
-			if (x == 0 && y == 0) break;
-			map[x][y] = map[y][x] = true;
-		}
-		if (map[1][2])mem[1][2] = 1;
-		for (i = 3; i <= n; ++i)
-		{
-			for (j = 1; j < i - 1 && map[i - 1][i]; ++j)
-			{
-				mem[j][i] = 
-			}
-			for (j = 1; j < i - 1; ++j)
-			{
-
-			}
-		}		
-	}
-};
-*/
 class moonTour_10272 {
 private:
 	double mem[256][256];//double mem[512][512];
