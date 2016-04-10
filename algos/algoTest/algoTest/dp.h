@@ -9,6 +9,57 @@
 #include <iostream>
 using namespace std;
 
+class BOJ_2240
+{
+private:
+	int arr[1001], dp[1001][31];//dp[t][w] = 현재까지 이동횟수가 w일때 t초에 받을수있는 최대 자두양
+	int T, W;					// 이녀석은 초기상태가 픽스된상태이므로 0부터증가하는 순서로 검사해야함
+	int solve(int t,int w,int pos)
+	{
+		if (t == T)return 0;
+		int& ret = dp[t][w];
+		if (ret != -1)return ret;
+		int add,add2,nextPos;
+		pos == arr[t] ? add = 1, add2 = 0 : add = 0, add2 = 1;	//현재 받을 수 있는지 지정 add은 안움직였을때 add2는 직전에 움직였을때 받을지 안받을지
+		pos == 1 ? nextPos = 2 : nextPos = 1;	//다음 위치 변경시 위치 지정		
+		if (w + 1 <= W)ret = max(solve(t + 1, w, pos) + add, solve(t + 1, w + 1, nextPos) + add2);
+		else ret = solve(t + 1, w, pos) + add;
+		return ret;
+	}
+public:
+	void run()
+	{
+		memset(dp, -1, sizeof(dp));
+		cin >> T >> W;
+		for (int i = 0; i < T; ++i)cin >> arr[i];
+		cout << solve(0, 0, 1) << endl;
+	}
+};
+class BOJ_11060
+{
+private:									// 이녀석은 0부터 시작해야함 끝수는 점프를하지않기때문에 예외생김
+	int n, arr[1001], dp[1001], MAX = 1000;	//dp[i] = i 번째 위치로 가기위한 최소점프횟수
+	int solve(int idx)
+	{
+		if (idx >= n - 1)return 0;
+		int& ret = dp[idx];
+		if (ret != -1)return ret;
+		ret = MAX;
+		for (int i = 1; i <= arr[idx]; ++i)
+			ret = min(ret, solve(idx + i) + 1);
+		return ret;
+	}
+public:
+	void run()
+	{
+		memset(dp, -1, sizeof(dp));
+		cin >> n;
+		for (int i = 0; i < n; ++i)cin >> arr[i];
+		int ret = solve(0);
+		if (ret == MAX)ret = -1;
+		cout << ret << endl;
+	}
+};
 class BOJ_1744
 {
 private:
@@ -18,11 +69,11 @@ private:
 	
 	int solve(int idx)
 	{
-		if (idx >= n)return 0;
+		if (idx < 0)return 0;
 		int& ret = dp[idx];
 		if (ret != -1)return ret;
-		ret = arr[idx] + solve(idx + 1);
-		if (idx + 1 < n)ret = max(ret, arr[idx] * arr[idx + 1] + solve(idx + 2));
+		ret = arr[idx] + solve(idx - 1);
+		if (idx - 1 >= 0)ret = max(ret, arr[idx] * arr[idx - 1] + solve(idx - 2));
 		return ret;
 	}
 public:
@@ -32,7 +83,7 @@ public:
 		cin >> n;
 		for (int i = 0; i < n; ++i)cin >> arr[i];
 		sort(arr, arr + n);
-		cout << solve(0) << endl;
+		cout << solve(n-1) << endl;
 	}
 };
 //dp[i] = i번까지 만들 수 있는 최대 부분증가합
