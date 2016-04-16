@@ -9,6 +9,76 @@
 #include <iostream>
 using namespace std;
 
+class BOJ_1563
+{
+private:
+	int dp[1001][3][2], n,mod = 1000000;//dp[i][a][l] = 현재 i 일이고 현재 연속 결석일이 a이고 지각일이 l일 때 경우의수
+	int solve(int idx, int ab, int late)
+	{
+		if (ab == 3 || late == 2)return 0;
+		if (idx == 0)return 1;
+		int&ret = dp[idx][ab][late];
+		if (ret != -1)return ret;
+		ret = (solve(idx - 1, 0, late)%mod + solve(idx - 1, ab + 1, late) % mod + solve(idx - 1, 0, late + 1) % mod)%mod;
+		return ret;
+	}
+public:
+	void run()
+	{
+		memset(dp, -1, sizeof(dp));
+		cin >> n;
+		cout << solve(n, 0, 0) << endl;
+	}
+};
+class BOJ_2156
+{
+private:
+	int arr[10001];
+	int dp[10001][3];
+	int n;
+	int solve(int idx,int s)
+	{
+		if (idx == n )return 0;
+		int& ret = dp[idx][s];
+		if (ret != -1)return ret;
+		ret = solve(idx + 1, 0);
+		if (s + 1 < 3)	ret = max(solve(idx + 1, s + 1) + arr[idx], ret);
+		return ret;
+	}
+public:
+	void run()
+	{
+		memset(dp, -1, sizeof(dp));
+		cin >> n;
+		for (int i = 0; i < n; ++i)cin >> arr[i];
+		cout << solve(0, 0) << endl;
+	}
+};
+class BOJ_10476
+{
+private:
+	int arr[201][2], dp[201][201][3];
+	int n, k,inf = 98765432,sum=0;
+	int solve(int idx, int cnt, int s)
+	{
+		if (cnt == 0)return 0;
+		if (idx < 0)return inf;
+		int& ret = dp[idx][cnt][s];
+		if (ret != -1)return ret;
+		ret = solve(idx - 1, cnt, 0);
+		if((s | 1) != 3)ret = min(ret,solve(idx - 1, cnt - 1, s | 1) + arr[idx][0]);
+		if((s | 2) != 3)ret = min(ret,solve(idx - 1, cnt - 1, s | 2) + arr[idx][1]);
+		return ret;
+	}
+public:
+	void run()
+	{
+		memset(dp, -1, sizeof(dp));
+		cin >> n >> k;
+		for (int i = 0; i <= n; ++i)cin >> arr[i][0] >> arr[i][1],sum += arr[i][0] + arr[i][1];
+		cout << sum - solve(n-1, k, 0) << endl;
+	}
+};
 class BOJ_2240
 {
 private:
